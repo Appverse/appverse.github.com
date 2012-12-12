@@ -120,9 +120,9 @@ Unity._background = false;
  */
 Unity.isBackground = function() {
 	return Unity._background ? Unity._background : false;
-}
+};
 
-<span id='Unity-method-'>/**
+<span id='Unity-method-backgroundApplicationListener'>/**
 </span> * Applications should override/implement this method to be aware of application being send to background, and should perform the desired javascript code on this case.
  * &lt;br&gt; @version 2.0
  * @method
@@ -318,9 +318,9 @@ Unity.Net = new Net();
 Net.prototype.IsNetworkReachable = function(url)
 {
 	return post_to_url(Unity.Net.serviceName, &quot;IsNetworkReachable&quot;, get_params([url]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Net-method-'>/**
+<span id='Unity-Net-method-GetNetworkTypeSupported'>/**
 </span> * Gets the network types currently supported by this device.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of the network types: 
@@ -337,9 +337,9 @@ Net.prototype.IsNetworkReachable = function(url)
 Net.prototype.GetNetworkTypeSupported = function()
 {
 	return post_to_url(Unity.Net.serviceName, &quot;GetNetworkTypeSupported&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Net-method-'>/**
+<span id='Unity-Net-method-GetNetworkTypeReachableList'>/**
 </span> * Gets the network types from which this device is able to reach the given url host. Preference ordered list.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of the network types: 
@@ -357,9 +357,9 @@ Net.prototype.GetNetworkTypeSupported = function()
 Net.prototype.GetNetworkTypeReachableList = function(url)
 {
 	return post_to_url(Unity.Net.serviceName, &quot;GetNetworkTypeReachableList&quot;, get_params([url]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Net-method-'>/**
+<span id='Unity-Net-method-GetNetworkTypeReachable'>/**
 </span> * Gets the prefered network type from which this device is able to reach the given url host.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of the network types: 
@@ -377,9 +377,9 @@ Net.prototype.GetNetworkTypeReachableList = function(url)
 Net.prototype.GetNetworkTypeReachable = function(url)
 {
 	return post_to_url(Unity.Net.serviceName, &quot;GetNetworkTypeReachable&quot;, get_params([url]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Net-method-'>/**
+<span id='Unity-Net-method-OpenBrowser'>/**
 </span> * Opens the given url in a different Web View with a Navigation Bar.
  * &lt;br&gt; @version 1.0
  * @param {String} title The title of the Navigation Bar.
@@ -391,9 +391,9 @@ Net.prototype.GetNetworkTypeReachable = function(url)
 Net.prototype.OpenBrowser = function(title, buttonText, url)
 {
 	return post_to_url(Unity.Net.serviceName, &quot;OpenBrowser&quot;, get_params([title, buttonText, url]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Net-method-'>/**
+<span id='Unity-Net-method-ShowHtml'>/**
 </span> * Renders the given html in a different Web View with a Navigation Bar.
  * &lt;br&gt; @version 1.0
  * @param {String} title The title of the Navigation Bar.
@@ -405,9 +405,9 @@ Net.prototype.OpenBrowser = function(title, buttonText, url)
 Net.prototype.ShowHtml = function(title, buttonText, html)
 {
 	return post_to_url(Unity.Net.serviceName, &quot;ShowHtml&quot;, get_params([title, buttonText, html]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Net-method-'>/**
+<span id='Unity-Net-method-DownloadFile'>/**
 </span> * Downloads the given url file by using the default native handler.
  * &lt;br&gt; @version 2.0
  * @param {String} url The url to be opened.
@@ -417,7 +417,7 @@ Net.prototype.ShowHtml = function(title, buttonText, html)
 Net.prototype.DownloadFile = function(url)
 {
 	return post_to_url(Unity.Net.serviceName, &quot;DownloadFile&quot;, get_params([url]), &quot;POST&quot;);
-}
+};
 
 <span id='Unity-Net-Async'>/** 
 </span> * @class Unity.Net.Async 
@@ -736,9 +736,9 @@ Unity.System = new System();
 System.prototype.GetDisplays = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetDisplays&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetDisplayInfo'>/**
 </span> * Provides information about the display given its index. &lt;br/&gt;For further information see, {@link Unity.System.DisplayInfo DisplayInfo}. 
  * &lt;br&gt; @version 1.0
  * @param {int} displayNumber The display number index. If not provided, primary display information is returned.
@@ -752,9 +752,9 @@ System.prototype.GetDisplayInfo = function(displayNumber)
 	} else {
 		return post_to_url(Unity.System.serviceName, &quot;GetDisplayInfo&quot;, get_params([displayNumber]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetOrientation'>/**
 </span> * Provides the current orientation of the given display index, 1 being the primary display.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of display orientation: 
@@ -768,9 +768,9 @@ System.prototype.GetDisplayInfo = function(displayNumber)
 System.prototype.GetOrientation = function(displayNumber)
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetOrientation&quot;, get_params([displayNumber]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetOrientationCurrent'>/**
 </span> * Provides the current orientation of the primary display - the primary display is 1.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of display orientation: 
@@ -783,9 +783,9 @@ System.prototype.GetOrientation = function(displayNumber)
 System.prototype.GetOrientationCurrent = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetOrientationCurrent&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetOrientationSupported'>/**
 </span> * Provides the list of supported orientations for the given display number.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of display orientation: 
@@ -803,9 +803,9 @@ System.prototype.GetOrientationSupported = function(displayNumber)
 	} else {
 		return post_to_url(Unity.System.serviceName, &quot;GetOrientationSupported&quot;, get_params([displayNumber]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetLocaleSupported'>/**
 </span> * List of available Locales for the device. &lt;br/&gt;For further information see, {@link Unity.System.Locale Locale}. 
  * &lt;br&gt; @version 1.0
  * @return {Locale[]} The list of supported locales.
@@ -814,9 +814,9 @@ System.prototype.GetOrientationSupported = function(displayNumber)
 System.prototype.GetLocaleSupported = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetLocaleSupported&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetLocaleCurrent'>/**
 </span> * Gets the current Locale for the device.&lt;br/&gt;For further information see, {@link Unity.System.Locale Locale}. 
  * &lt;br&gt; @version 1.0
  * @return {Locale} The current Locale information.
@@ -825,9 +825,9 @@ System.prototype.GetLocaleSupported = function()
 System.prototype.GetLocaleCurrent = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetLocaleCurrent&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetInputMethods'>/**
 </span> * Gets the supported input methods.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of input methods: 
@@ -846,9 +846,9 @@ System.prototype.GetLocaleCurrent = function()
 System.prototype.GetInputMethods = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetInputMethods&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetInputGestures'>/**
 </span> * Gets the supported input gestures.
  * &lt;br&gt; @version 1.0
  * @return {int[]} List of input gestures supported by the device.
@@ -857,9 +857,9 @@ System.prototype.GetInputMethods = function()
 System.prototype.GetInputGestures = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetInputGestures&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetInputButtons'>/**
 </span> * Gets the supported input buttons.
  * &lt;br&gt; @version 1.0
  * @return {int[]} List of input buttons supported by the device.
@@ -868,9 +868,9 @@ System.prototype.GetInputGestures = function()
 System.prototype.GetInputButtons = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetInputButtons&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetInputMethodCurrent'>/**
 </span> * Gets the currently active input method.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of input method: 
@@ -889,9 +889,9 @@ System.prototype.GetInputButtons = function()
 System.prototype.GetInputMethodCurrent = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetInputMethodCurrent&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetMemoryAvailable'>/**
 </span> * Provides memory available for the given use and type.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of memory types: 
@@ -914,9 +914,9 @@ System.prototype.GetMemoryAvailable = function(memUse, memType)
 	} else {
 		return post_to_url(Unity.System.serviceName, &quot;GetMemoryAvailable&quot;, get_params([memUse,memType]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetMemoryAvailableTypes'>/**
 </span> * Gets the device installed memory types.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of memory types: 
@@ -929,9 +929,9 @@ System.prototype.GetMemoryAvailable = function(memUse, memType)
 System.prototype.GetMemoryAvailableTypes = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetMemoryAvailableTypes&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetMemoryStatus'>/**
 </span> * Provides a global map of the memory status for all storage types installed, if 'memType' not provided.
  * Provides a map of the memory status for the given storage type, if 'memType' provided.
  * &lt;br/&gt;For further information see, {@link Unity.System.MemoryStatus MemoryStatus}. 
@@ -951,9 +951,9 @@ System.prototype.GetMemoryStatus = function(memType)
 	} else {
 		return post_to_url(Unity.System.serviceName, &quot;GetMemoryStatus&quot;, get_params([memType]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetMemoryTypes'>/**
 </span> * Gets the device currently available memory types.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of memory types: 
@@ -966,9 +966,9 @@ System.prototype.GetMemoryStatus = function(memType)
 System.prototype.GetMemoryTypes = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetMemoryTypes&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetMemoryUses'>/**
 </span> * Gets the device currently available memory uses.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of memory uses: 
@@ -981,9 +981,9 @@ System.prototype.GetMemoryTypes = function()
 System.prototype.GetMemoryUses = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetMemoryUses&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetOSHardwareInfo'>/**
 </span> * Provides information about the device hardware.&lt;br/&gt;For further information see, {@link Unity.System.HardwareInfo HardwareInfo}.
  * &lt;br&gt; @version 1.0
  * @return {HardwareInfo} The device hardware information (name, version, UUID, etc).
@@ -992,9 +992,9 @@ System.prototype.GetMemoryUses = function()
 System.prototype.GetOSHardwareInfo = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetOSHardwareInfo&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetOSInfo'>/**
 </span> * Provides information about the device operating system.&lt;br/&gt;For further information see, {@link Unity.System.OSInfo OSInfo}.
  * &lt;br&gt; @version 1.0
  * @return {OSInfo} The device OS information (name, vendor, version).
@@ -1003,9 +1003,9 @@ System.prototype.GetOSHardwareInfo = function()
 System.prototype.GetOSInfo = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetOSInfo&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetOSUserAgent'>/**
 </span> * Provides the current user agent string.
  * &lt;br&gt; @version 1.0
  * @return {String} The user agent string. 
@@ -1014,9 +1014,9 @@ System.prototype.GetOSInfo = function()
 System.prototype.GetOSUserAgent = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetOSUserAgent&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetPowerInfo'>/**
 </span> * Provides information about the device charge.&lt;br/&gt;For further information see, {@link Unity.System.PowerInfo PowerInfo}.
  * &lt;br&gt; @version 1.0
  * @return {PowerInfo} The current charge information.
@@ -1025,9 +1025,9 @@ System.prototype.GetOSUserAgent = function()
 System.prototype.GetPowerInfo = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetPowerInfo&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetPowerRemainingTime'>/**
 </span> * Provides device autonomy time (in milliseconds).
  * &lt;br&gt; @version 1.0
  * @return {long} The remaining power time.
@@ -1036,9 +1036,9 @@ System.prototype.GetPowerInfo = function()
 System.prototype.GetPowerRemainingTime = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetPowerRemainingTime&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-GetCPUInfo'>/**
 </span> * Provides information about the device CPU.&lt;br/&gt;For further information see, {@link Unity.System.CPUInfo CPUInfo}.
  * &lt;br&gt; @version 1.0
  * @return {CPUInfo} The processor information (name, vendor, speed, UUID, etc).
@@ -1047,9 +1047,9 @@ System.prototype.GetPowerRemainingTime = function()
 System.prototype.GetCPUInfo = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;GetCPUInfo&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-IsOrientationLocked'>/**
 </span> * Provides information about if the current application is allowed to autorotate or not. If locked, 
  * &lt;br&gt; @version 2.0
  * @return {Boolean} True if application remains with the same screen orientation (even though user rotates the device).
@@ -1057,9 +1057,9 @@ System.prototype.GetCPUInfo = function()
  */
 System.prototype.IsOrientationLocked  = function() {
 	return post_to_url(Unity.System.serviceName, &quot;IsOrientationLocked&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-LockOrientation'>/**
 </span> * Sets wheter the current application could autorotate or not (whether orientation is locked or not)
  * &lt;br&gt; @version 2.0
  * @param {Boolean} Set value to true if application should remain with the same screen orientation (even though user rotates the device)..
@@ -1068,9 +1068,9 @@ System.prototype.IsOrientationLocked  = function() {
  */
 System.prototype.LockOrientation = function(lock, orientation) {
 	return post_to_url(Unity.System.serviceName, &quot;LockOrientation&quot;, get_params([lock,orientation]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-CopyToClipboard'>/**
 </span> * Copies a specified text to the native device clipboard.
  * &lt;br&gt; @version 3.2
  * @param {String} textToCopy Text to copy to the Clipboard.
@@ -1080,9 +1080,9 @@ System.prototype.LockOrientation = function(lock, orientation) {
 System.prototype.CopyToClipboard = function(textToCopy)
 {
 	return post_to_url(Unity.System.serviceName, &quot;CopyToClipboard&quot;, get_params([textToCopy]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-ShowSplashScreen'>/**
 </span> * Shows default splashcreen (on current orientation). Only the corresponding {@link Unity.System.DismissSplashScreen} method could dismiss this splash screen.
  * The splash screen could be shown on application start up by default, by properly configure it on the applaction build.properties (build property: app.showsplashscreen.onstartup=true)
  * &lt;br&gt; @version 3.2
@@ -1092,9 +1092,9 @@ System.prototype.CopyToClipboard = function(textToCopy)
 System.prototype.ShowSplashScreen = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;ShowSplashScreen&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-DismissSplashScreen'>/**
 </span> * Dismisses the splashcreen previously shown using {@link Unity.System.ShowSplashScreen}.
  * &lt;br&gt; @version 3.2
  * @return {Boolean} True if the splash screen is successfully dismissed, else False.
@@ -1103,9 +1103,9 @@ System.prototype.ShowSplashScreen = function()
 System.prototype.DismissSplashScreen = function()
 {
 	return post_to_url(Unity.System.serviceName, &quot;DismissSplashScreen&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-System-method-'>/**
+<span id='Unity-System-method-DismissApplication'>/**
 </span> * Dismisses the current application programmatically.
  * It is up to the HTML app to manage the state and determine when to close the application using this method.
  * &lt;br&gt; &lt;b&gt;This feature is not supported on iOS platform (interface is available, but with no effect)&lt;b&gt;
@@ -1115,7 +1115,7 @@ System.prototype.DismissSplashScreen = function()
 System.prototype.DismissApplication = function()
 {
 	post_to_url(Unity.System.serviceName, &quot;DismissApplication&quot;, null, &quot;POST&quot;);
-}
+};
 
 
 /*
@@ -1152,9 +1152,9 @@ Unity.Database = new Database();
 Database.prototype.GetDatabaseList = function()
 {
 	return post_to_url(Unity.Database.serviceName, &quot;GetDatabaseList&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-CreateDatabase'>/**
 </span> * Creates database on default path.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt; @version 1.0
  * @param {String} dbName The database file name (please include .db extension).
@@ -1164,9 +1164,9 @@ Database.prototype.GetDatabaseList = function()
 Database.prototype.CreateDatabase = function(dbName)
 {
 	return post_to_url(Unity.Database.serviceName, &quot;CreateDatabase&quot;, get_params([dbName]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-GetDatabase'>/**
 </span> * Gets database reference object by given name.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt;Databases are located on the default database path: /&lt;PersonalFolder&gt;/sqlite/
  * &lt;br&gt; @version 1.0
@@ -1177,9 +1177,9 @@ Database.prototype.CreateDatabase = function(dbName)
 Database.prototype.GetDatabase = function(dbName)
 {
 	return post_to_url(Unity.Database.serviceName, &quot;GetDatabase&quot;, get_params([dbName]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-CreateTable'>/**
 </span> * Creates a table inside the given database.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt; @version 1.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase} ).
@@ -1191,9 +1191,9 @@ Database.prototype.GetDatabase = function(dbName)
 Database.prototype.CreateTable = function(db,tableName,columnsDefs)
 {
 	return post_to_url(Unity.Database.serviceName, &quot;CreateTable&quot;, get_params([db,tableName, columnsDefs]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-DeleteDatabase'>/**
 </span> * Deletes database on default path.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt; @version 1.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}) to be deleted.
@@ -1203,9 +1203,9 @@ Database.prototype.CreateTable = function(db,tableName,columnsDefs)
 Database.prototype.DeleteDatabase = function(db)
 {
 	return post_to_url(Unity.Database.serviceName, &quot;DeleteDatabase&quot;, get_params([db]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-DeleteTable'>/**
 </span> * Deletes table from the given database.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt; @version 1.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase} ).
@@ -1216,9 +1216,9 @@ Database.prototype.DeleteDatabase = function(db)
 Database.prototype.DeleteTable = function(db,tableName)
 {
 	return post_to_url(Unity.Database.serviceName, &quot;DeleteTable&quot;, get_params([db,tableName]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-GetTableNames'>/**
 </span> * Gets table names from the given database.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt; @version 1.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}) to check for table names.
@@ -1228,9 +1228,9 @@ Database.prototype.DeleteTable = function(db,tableName)
 Database.prototype.GetTableNames = function(db)
 {
 	return post_to_url(Unity.Database.serviceName, &quot;GetTableNames&quot;, get_params([db]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-Exists'>/**
 </span> * Checks if database exists by database bean reference, if 'tableName' is not provided.
  * Checks if database table exists by database bean reference and table name, if 'tableName' is provided.
  * &lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
@@ -1247,9 +1247,9 @@ Database.prototype.Exists = function(db, tableName)
 	} else {
 		return post_to_url(Unity.Database.serviceName, &quot;Exists&quot;, get_params([db,tableName]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-ExistsDatabase'>/**
 </span> * Checks if database exists by given database name (including .db extension).&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt; @version 1.0
  * @param {String} dbName The database name to check for existence.
@@ -1259,9 +1259,9 @@ Database.prototype.Exists = function(db, tableName)
 Database.prototype.ExistsDatabase = function(dbName)
 {
 	return post_to_url(Unity.Database.serviceName, &quot;ExistsDatabase&quot;, get_params([dbName]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-ExecuteSQLQuery'>/**
 </span> * Executes SQL query against given database.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database} and {@link Unity.Database.ResultSet ResultSet}.
  * &lt;br&gt; @version 1.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}).
@@ -1277,9 +1277,9 @@ Database.prototype.ExecuteSQLQuery = function(db, query, replacements)
 	} else {
 		return post_to_url(Unity.Database.serviceName, &quot;ExecuteSQLQuery&quot;, get_params([db,query,replacements]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-ExecuteSQLStatement'>/**
 </span> * Executes SQL statement into the given database.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt; @version 1.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}).
@@ -1295,9 +1295,9 @@ Database.prototype.ExecuteSQLStatement = function(db, statement, replacements)
 	} else {
 		return post_to_url(Unity.Database.serviceName, &quot;ExecuteSQLStatement&quot;, get_params([db,statement,replacements]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-Database-method-'>/**
+<span id='Unity-Database-method-ExecuteSQLTransaction'>/**
 </span> * Executes SQL transaction (some statements chain) inside given database.&lt;br/&gt;For further information see, {@link Unity.Database.Database Database}.
  * &lt;br&gt; @version 1.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}).
@@ -1309,7 +1309,7 @@ Database.prototype.ExecuteSQLStatement = function(db, statement, replacements)
 Database.prototype.ExecuteSQLTransaction = function(db, statements, rollbackFlag)
 {
 	return post_to_url(Unity.Database.serviceName, &quot;ExecuteSQLTransaction&quot;, get_params([db,statements,rollbackFlag]), &quot;POST&quot;);
-}
+};
 
 <span id='Unity-Database-Async'>/**
 </span> * @class Unity.Database.Async 
@@ -1540,9 +1540,9 @@ Unity.FileSystem = new FileSystem();
 FileSystem.prototype.GetDirectoryRoot = function()
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;GetDirectoryRoot&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-CreateDirectory'>/**
 </span> * Creates a directory under the given base directory, or under root directory if it is not provided.&lt;br/&gt;For further information see, {@link Unity.FileSystem.DirectoryData DirectoryData}.
  * &lt;br&gt; @version 1.0
  * @param {String} directoryName The directory name to be created. 
@@ -1557,9 +1557,9 @@ FileSystem.prototype.CreateDirectory = function(directoryName, baseDirectory)
 	} else {
 		return post_to_url(Unity.FileSystem.serviceName, &quot;CreateDirectory&quot;, get_params([directoryName,baseDirectory]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-CreateFile'>/**
 </span> * Creates a file under the given base directory, or under root directory if it is not provided.&lt;br/&gt;For further information see, {@link Unity.FileSystem.DirectoryData DirectoryData} and {@link Unity.FileSystem.FileData FileData}.
  * &lt;br&gt; @version 1.0
  * @param {String} fileName The file name to be created. 
@@ -1574,9 +1574,9 @@ FileSystem.prototype.CreateFile = function(fileName, baseDirectory)
 	} else {
 		return post_to_url(Unity.FileSystem.serviceName, &quot;CreateFile&quot;, get_params([fileName,baseDirectory]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-ListDirectories'>/**
 </span> * List all directories under the given base directory data, or under root directory if it is not provided.&lt;br/&gt;For further information see, {@link Unity.FileSystem.DirectoryData DirectoryData}.
  * &lt;br&gt; @version 1.0
  * @param {DirectoryData} dirData The base Directory to check for directories under it. Optional parameter.
@@ -1590,9 +1590,9 @@ FileSystem.prototype.ListDirectories = function(dirData)
 	} else {
 		return post_to_url(Unity.FileSystem.serviceName, &quot;ListDirectories&quot;, get_params([dirData]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-ListFiles'>/**
 </span> * List all files under the given base directory data, or under root directory if it is not provided.&lt;br/&gt;For further information see, {@link Unity.FileSystem.DirectoryData DirectoryData} and {@link Unity.FileSystem.FileData FileData}.
  * &lt;br&gt; @version 1.0
  * @param {DirectoryData} dirData The base Directory to check for files under it. Optional parameter.
@@ -1602,9 +1602,9 @@ FileSystem.prototype.ListDirectories = function(dirData)
 FileSystem.prototype.ListFiles = function(dirData)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;ListFiles&quot;, get_params([dirData]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-ExistsDirectory'>/**
 </span> * Checks if the given directory exists.&lt;br/&gt;For further information see, {@link Unity.FileSystem.DirectoryData DirectoryData}.
  * &lt;br&gt; @version 1.0
  * @param {DirectoryData} dirData The directory to check for existence.
@@ -1614,9 +1614,9 @@ FileSystem.prototype.ListFiles = function(dirData)
 FileSystem.prototype.ExistsDirectory = function(dirData)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;ExistsDirectory&quot;, get_params([dirData]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-DeleteDirectory'>/**
 </span> * Deletes the given directory.&lt;br/&gt;For further information see, {@link Unity.FileSystem.DirectoryData DirectoryData}.
  * &lt;br&gt; @version 1.0
  * @param {DirectoryData} dirData The directory to be deleted.
@@ -1626,9 +1626,9 @@ FileSystem.prototype.ExistsDirectory = function(dirData)
 FileSystem.prototype.DeleteDirectory = function(dirData)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;DeleteDirectory&quot;, get_params([dirData]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-DeleteFile'>/**
 </span> * Deletes the given file.&lt;br/&gt;For further information see, {@link Unity.FileSystem.FileData FileData}.
  * &lt;br&gt; @version 1.0
  * @param {FileData} fileData The file to be deleted.
@@ -1638,9 +1638,9 @@ FileSystem.prototype.DeleteDirectory = function(dirData)
 FileSystem.prototype.DeleteFile = function(fileData)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;DeleteFile&quot;, get_params([fileData]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-ExistsFile'>/**
 </span> * Checks if the given file exists.&lt;br/&gt;For further information see, {@link Unity.FileSystem.FileData FileData}.
  * &lt;br&gt; @version 1.0
  * @param {FileData} fileData The file data to check for existence.
@@ -1650,9 +1650,9 @@ FileSystem.prototype.DeleteFile = function(fileData)
 FileSystem.prototype.ExistsFile = function(fileData)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;ExistsFile&quot;, get_params([fileData]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-ReadFile'>/**
 </span> * Reads file on given path.&lt;br/&gt;For further information see, {@link Unity.FileSystem.FileData FileData}.
  * &lt;br&gt; @version 1.0
  * @param {FileData} fileData The file data to read.
@@ -1662,9 +1662,9 @@ FileSystem.prototype.ExistsFile = function(fileData)
 FileSystem.prototype.ReadFile = function(fileData)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;ReadFile&quot;, get_params([fileData]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-WriteFile'>/**
 </span> * Writes contents to file on given path.&lt;br/&gt;For further information see, {@link Unity.FileSystem.FileData FileData}.
  * &lt;br&gt; @version 1.0
  * @param {FileData} fileData The file to add/append contents to.
@@ -1676,9 +1676,9 @@ FileSystem.prototype.ReadFile = function(fileData)
 FileSystem.prototype.WriteFile = function(fileData, contents, appendFlag)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;WriteFile&quot;, get_params([fileData,contents,appendFlag]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-CopyFromResources'>/**
 </span> * Copies the given file on &quot;fromPath&quot; to the &quot;toPath&quot;. 
  * &lt;br&gt; @version 1.1
  * @param {String} sourceFileName The file name (relative path under &quot;resources&quot; application directory) to be copied from. 
@@ -1689,9 +1689,9 @@ FileSystem.prototype.WriteFile = function(fileData, contents, appendFlag)
 FileSystem.prototype.CopyFromResources = function(sourceFileName, destFileName)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;CopyFromResources&quot;, get_params([sourceFileName,destFileName]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-FileSystem-method-'>/**
+<span id='Unity-FileSystem-method-CopyFromRemote'>/**
 </span> * Copies the given remote file from &quot;url&quot; to the &quot;toPath&quot; (local relative path). 
  * &lt;br&gt; @version 2.1
  * @param {String} url The remote url file to be copied from. 
@@ -1702,7 +1702,7 @@ FileSystem.prototype.CopyFromResources = function(sourceFileName, destFileName)
 FileSystem.prototype.CopyFromRemote = function(url, destFileName)
 {
 	return post_to_url(Unity.FileSystem.serviceName, &quot;CopyFromRemote&quot;, get_params([url,destFileName]), &quot;POST&quot;);
-}
+};
 
 /*
  * Notification INTERFACES
@@ -1738,9 +1738,9 @@ Unity.Notification = new Notification();
 Notification.prototype.StartNotifyActivity = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StartNotifyActivity&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StopNotifyActivity'>/**
 </span> * Stops and hides the activity indicator animation.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if activity indicator could be stopped.
@@ -1749,9 +1749,9 @@ Notification.prototype.StartNotifyActivity = function()
 Notification.prototype.StopNotifyActivity = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StopNotifyActivity&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-IsNotifyActivityRunning'>/**
 </span> * Checks if activity indicator animation is started.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True/false wheter activity indicator is running.
@@ -1760,9 +1760,9 @@ Notification.prototype.StopNotifyActivity = function()
 Notification.prototype.IsNotifyActivityRunning = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;IsNotifyActivityRunning&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StartNotifyAlert'>/**
 </span> * Starts an alert notification.
  * &lt;br&gt; @version 1.0
  * @param {String} message The alert message to be displayed.
@@ -1778,9 +1778,9 @@ Notification.prototype.StartNotifyAlert = function(message, title, buttonText)
 	} else {
 		return post_to_url(Unity.Notification.serviceName, &quot;StartNotifyAlert&quot;, get_params([title,message,buttonText]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StopNotifyAlert'>/**
 </span> * Stops an alert notification.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if alert notification could be stopped.
@@ -1789,9 +1789,9 @@ Notification.prototype.StartNotifyAlert = function(message, title, buttonText)
 Notification.prototype.StopNotifyAlert = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StopNotifyAlert&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StartNotifyActionSheet'>/**
 </span> * Shows an action sheet.
  * &lt;br&gt; @version 1.0
  * @param {String} title The title to be displayed on the action sheet.
@@ -1803,9 +1803,9 @@ Notification.prototype.StopNotifyAlert = function()
 Notification.prototype.StartNotifyActionSheet = function(title, buttons, jsCallbackFunctions)
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StartNotifyActionSheet&quot;, get_params([title, buttons, jsCallbackFunctions]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StartNotifyBeep'>/**
 </span> * Starts a beep notification.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if beep notification could be started.
@@ -1814,9 +1814,9 @@ Notification.prototype.StartNotifyActionSheet = function(title, buttons, jsCallb
 Notification.prototype.StartNotifyBeep = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StartNotifyBeep&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StopNotifyBeep'>/**
 </span> * Stops the current beep notification.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if beep notification could be stopped.
@@ -1825,9 +1825,9 @@ Notification.prototype.StartNotifyBeep = function()
 Notification.prototype.StopNotifyBeep = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StopNotifyBeep&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StartNotifyBlink'>/**
 </span> * Starts a blink notification.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if beep notification could be started.
@@ -1836,9 +1836,9 @@ Notification.prototype.StopNotifyBeep = function()
 Notification.prototype.StartNotifyBlink = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StartNotifyBlink&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StopNotifyBlink'>/**
 </span> * Stops the current blink notification.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if blink notification could be stopped.
@@ -1847,9 +1847,9 @@ Notification.prototype.StartNotifyBlink = function()
 Notification.prototype.StopNotifyBlink = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StopNotifyBlink&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StartNotifyLoading'>/**
 </span> * Shows and starts the progress indicator animation.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if progress indicator animation could be started.
@@ -1862,9 +1862,9 @@ Notification.prototype.StartNotifyLoading = function(loadingText)
 	} else {
 		return post_to_url(Unity.Notification.serviceName, &quot;StartNotifyLoading&quot;, get_params([loadingText]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StopNotifyLoading'>/**
 </span> * Stops the current progress indicator animation.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if progress indicator animation could be stopped.
@@ -1873,9 +1873,9 @@ Notification.prototype.StartNotifyLoading = function(loadingText)
 Notification.prototype.StopNotifyLoading = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StopNotifyLoading&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-IsNotifyLoadingRunning'>/**
 </span> * Checks if progress indicator animation is started.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True/false wheter progress indicator is running.
@@ -1884,9 +1884,9 @@ Notification.prototype.StopNotifyLoading = function()
 Notification.prototype.IsNotifyLoadingRunning = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;IsNotifyLoadingRunning&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-UpdateNotifyLoading'>/**
 </span> * Updates the progress indicator animation.
  * &lt;br&gt; @version 1.0
  * @param {float} progress The current progress; values between 0.0 and 1.0 (completed).
@@ -1895,9 +1895,9 @@ Notification.prototype.IsNotifyLoadingRunning = function()
 Notification.prototype.UpdateNotifyLoading = function(progress)
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;UpdateNotifyLoading&quot;, get_params([progress]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StartNotifyVibrate'>/**
 </span> * Starts a vibration notification.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if vibration notification could be started.
@@ -1906,9 +1906,9 @@ Notification.prototype.UpdateNotifyLoading = function(progress)
 Notification.prototype.StartNotifyVibrate = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StartNotifyVibrate&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Notification-method-'>/**
+<span id='Unity-Notification-method-StopNotifyVibrate'>/**
 </span> * Stops the current vibration notification.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if vibration notification could be stopped.
@@ -1917,7 +1917,7 @@ Notification.prototype.StartNotifyVibrate = function()
 Notification.prototype.StopNotifyVibrate = function()
 {
 	return post_to_url(Unity.Notification.serviceName, &quot;StopNotifyVibrate&quot;, null, &quot;POST&quot;);
-}
+};
 
 <span id='Unity-Notification-Async'>/**
 </span> * @class Unity.Notification.Async
@@ -2237,9 +2237,9 @@ Unity.IO = new IO();
 IO.prototype.GetServices = function()
 {
 	return post_to_url(Unity.IO.serviceName, &quot;GetServices&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-IO-method-'>/**
+<span id='Unity-IO-method-GetService'>/**
 </span> * Gets the I/O Service that matches the given name, and type (if provided). It is possible to define two services with the same name, but different type.
  * &lt;br/&gt;For further information see, {@link Unity.IO.IOService IOService}.
  * &lt;br&gt; @version 1.0
@@ -2266,9 +2266,9 @@ IO.prototype.GetService = function(serviceName, serviceType)
 	} else {
 		return post_to_url(Unity.IO.serviceName, &quot;GetService&quot;,get_params([serviceName,serviceType]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-IO-method-'>/**
+<span id='Unity-IO-method-InvokeService'>/**
 </span> * Invokes the I/O Service that matches the given service name (or service object reference), and type (if provided).
  * &lt;br/&gt;For further information see, {@link Unity.IO.IOService IOService}, {@link Unity.IO.IORequest IORequest} and {@link Unity.IO.IOResponse IOResponse}.
  * &lt;br&gt; @version 1.0
@@ -2296,7 +2296,7 @@ IO.prototype.InvokeService = function(requestObjt, service, serviceType)
 	} else {
 		return post_to_url(Unity.IO.serviceName, &quot;InvokeService&quot;,get_params([requestObjt,service,serviceType]), &quot;POST&quot;);
 	}
-}
+};
 
 <span id='Unity-IO-Async'>/**
 </span> * @class Unity.IO.Async
@@ -2409,9 +2409,9 @@ Unity.Geo = new Geo();
 Geo.prototype.GetAcceleration = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;GetAcceleration&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-GetCoordinates'>/**
 </span> * Gets the current device location coordinates. &lt;br/&gt;For further information see, {@link Unity.Geo.LocationCoordinate LocationCoordinate}.
  * &lt;br&gt; @version 1.0
  * @return {LocationCoordinate} Current location info (coordinates and precision).
@@ -2420,9 +2420,9 @@ Geo.prototype.GetAcceleration = function()
 Geo.prototype.GetCoordinates = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;GetCoordinates&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-GetHeading'>/**
 </span> * Gets the heading relative to the given north type (if 'northType' is not provided, default is used: magnetic noth pole).
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of north type: 
@@ -2442,9 +2442,9 @@ Geo.prototype.GetHeading = function(northType)
 	}
 	headingString = headingString.replace(/,/, '.');  // change comma to points, if case.
 	return parseFloat(headingString);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-GetDeviceOrientation'>/**
 </span> * Gets the orientation relative to the magnetic north pole.
  * &lt;br&gt; @version 1.0
  * @return {float} Current orientation. Measured in degrees, minutes and seconds.
@@ -2455,9 +2455,9 @@ Geo.prototype.GetDeviceOrientation = function()
 	var orientationString = post_to_url(Unity.Geo.serviceName, &quot;GetDeviceOrientation&quot;, null, &quot;POST&quot;, true); // &quot;true&quot; to get value as string, and parse to float here
 	orientationString = orientationString.replace(/,/, '.');  // change comma to points, if case.
 	return parseFloat(orientationString);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-GetVelocity'>/**
 </span> * Gets the current device velocity.
  * &lt;br&gt; @version 1.0
  * @return {float} Device speed (in meters/second).
@@ -2468,9 +2468,9 @@ Geo.prototype.GetVelocity = function()
 	var velocityString = post_to_url(Unity.Geo.serviceName, &quot;GetVelocity&quot;, null, &quot;POST&quot;, true); // &quot;true&quot; to get value as string, and parse to float here
 	velocityString = velocityString.replace(/,/, '.');  // change comma to points, if case.
 	return parseFloat(velocityString);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-GetMap'>/**
 </span> * Shows Map on screen.
  * &lt;br&gt; @version 1.0
  * @method
@@ -2478,9 +2478,9 @@ Geo.prototype.GetVelocity = function()
 Geo.prototype.GetMap = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;GetMap&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-SetMapSettings'>/**
 </span> * Specifies current map scale and bounding box radius.
  * &lt;br&gt; @version 1.0
  * @param {float} scale The desired map scale.
@@ -2490,9 +2490,9 @@ Geo.prototype.GetMap = function()
 Geo.prototype.SetMapSettings = function(scale, boundingBox)
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;SetMapSettings&quot;, get_params([scale,boundingBox]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-GetPOIList'>/**
 </span> * List of POIs for the current location, given a radius (bounding box). Optionaly, a query text and/or a category could be added to search for specific conditions.
  * &lt;br/&gt;For further information see, {@link Unity.Geo.POI POI}.
  * &lt;br&gt; @version 1.0
@@ -2514,9 +2514,9 @@ Geo.prototype.GetPOIList = function(location, radius, queryText, category)
 	} else {
 		return post_to_url(Unity.Geo.serviceName, &quot;GetPOIList&quot;, get_params([location,radius,queryText,category]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-GetPOI'>/**
 </span> * Gets a POI by the given id. &lt;br/&gt;For further information see, {@link Unity.Geo.POI POI}.
  * &lt;br&gt; @version 1.0
  * @param {String} poiId POI identifier.
@@ -2526,9 +2526,9 @@ Geo.prototype.GetPOIList = function(location, radius, queryText, category)
 Geo.prototype.GetPOI = function(poiId)
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;GetPOI&quot;, get_params([poiId]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-RemovePOI'>/**
 </span> * Removes a POI given its id. &lt;br/&gt;For further information see, {@link Unity.Geo.POI POI}.
  * &lt;br&gt; @version 1.0
  * @param {String} poiId POI identifier.
@@ -2537,9 +2537,9 @@ Geo.prototype.GetPOI = function(poiId)
 Geo.prototype.RemovePOI = function(poiId)
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;RemovePOI&quot;, get_params([poiId]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-UpdatePOI'>/**
 </span> * Moves a POI - given its id - to target location. &lt;br/&gt;For further information see, {@link Unity.Geo.POI POI}.
  * &lt;br&gt; @version 1.0
  * @param {String} poiId POI identifier.
@@ -2548,9 +2548,9 @@ Geo.prototype.RemovePOI = function(poiId)
 Geo.prototype.UpdatePOI = function(poi)
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;UpdatePOI&quot;, get_params([poi]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-StartUpdatingLocation'>/**
 </span> * Starts the location services in order to get the latitude, longitude, altitude, speed, etc.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if the device can start the location services
@@ -2559,9 +2559,9 @@ Geo.prototype.UpdatePOI = function(poi)
 Geo.prototype.StartUpdatingLocation = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;StartUpdatingLocation&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-StopUpdatingLocation'>/**
 </span> * Stops the location services in order to get the latitude, longitude, altitude, speed, etc.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if the device can stop the location services
@@ -2570,9 +2570,9 @@ Geo.prototype.StartUpdatingLocation = function()
 Geo.prototype.StopUpdatingLocation = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;StopUpdatingLocation&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-StartUpdatingHeading'>/**
 </span> * Starts the heading services in order to get the latitude, longitude, altitude, speed, etc.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if the device can start the location services
@@ -2581,9 +2581,9 @@ Geo.prototype.StopUpdatingLocation = function()
 Geo.prototype.StartUpdatingHeading = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;StartUpdatingHeading&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-StopUpdatingHeading'>/**
 </span> * Stops the heading services in order to get the latitude, longitude, altitude, speed, etc.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if the device can stop the location services
@@ -2592,9 +2592,9 @@ Geo.prototype.StartUpdatingHeading = function()
 Geo.prototype.StopUpdatingHeading = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;StopUpdatingHeading&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-GetGeoDecoder'>/**
 </span> * Performs a reverse geocoding in order to get, from the present latitude and longitude,
  * attributes like &quot;County&quot;, &quot;Street&quot;, &quot;County code&quot;, &quot;Location&quot;, ... in case such attributes
  * are available for that location.
@@ -2606,9 +2606,9 @@ Geo.prototype.StopUpdatingHeading = function()
 Geo.prototype.GetGeoDecoder = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;GetGeoDecoder&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-StartProximitySensor'>/**
 </span> * The proximity sensor detects an object close to the device.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if the proximity sensor detects an object close to the device
@@ -2617,9 +2617,9 @@ Geo.prototype.GetGeoDecoder = function()
 Geo.prototype.StartProximitySensor = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;StartProximitySensor&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-StopProximitySensor'>/**
 </span> * Stops the proximity sensor service.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if the proximity sensor service could be stopped.
@@ -2628,9 +2628,9 @@ Geo.prototype.StartProximitySensor = function()
 Geo.prototype.StopProximitySensor = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;StopProximitySensor&quot;, null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Geo-method-'>/**
+<span id='Unity-Geo-method-IsGPSEnabled'>/**
 </span> * Determines whether the Location Services (GPS) is enabled.
  * &lt;br&gt; @version 3.8
  * @return {Boolean} True if the device can start the location services
@@ -2639,7 +2639,7 @@ Geo.prototype.StopProximitySensor = function()
 Geo.prototype.IsGPSEnabled = function()
 {
 	return post_to_url(Unity.Geo.serviceName, &quot;IsGPSEnabled&quot;, null, &quot;POST&quot;);
-}
+};
 
 /*
  * MEDIA INTERFACES
@@ -2739,9 +2739,9 @@ Unity.Media = new Media();
 Media.prototype.GetMetadata = function(filePath)
 {
 	return post_to_url(Unity.Media.serviceName, &quot;GetMetadata&quot;,  get_params([filePath]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-Play'>/**
 </span> * Starts playing media.
  * &lt;br&gt; @version 1.0
  * @param {String} filePath The media file path.
@@ -2751,9 +2751,9 @@ Media.prototype.GetMetadata = function(filePath)
 Media.prototype.Play = function(filePath)
 {
 	return post_to_url(Unity.Media.serviceName, &quot;Play&quot;,  get_params([filePath]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-PlayStream'>/**
 </span> * Starts playing media.
  * &lt;br&gt; @version 1.0
  * @param {String} url The media remote URL.
@@ -2763,9 +2763,9 @@ Media.prototype.Play = function(filePath)
 Media.prototype.PlayStream = function(url)
 {
 	return post_to_url(Unity.Media.serviceName, &quot;PlayStream&quot;,  get_params([url]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-SeekPosition'>/**
 </span> * Moves player to the given position in the media.
  * &lt;br&gt; @version 1.0
  * @param {long} position Index position.
@@ -2775,9 +2775,9 @@ Media.prototype.PlayStream = function(url)
 Media.prototype.SeekPosition = function(position)
 {
 	return post_to_url(Unity.Media.serviceName, &quot;SeekPosition&quot;,  get_params([position]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-Stop'>/**
 </span> * Stops the current media playing.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if media file could be stopped.
@@ -2786,9 +2786,9 @@ Media.prototype.SeekPosition = function(position)
 Media.prototype.Stop = function()
 {
 	return post_to_url(Unity.Media.serviceName, &quot;Stop&quot;,  null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-Pause'>/**
 </span> * Pauses the current media playing.
  * &lt;br&gt; @version 1.0
  * @return {Boolean} True if media file could be stopped.
@@ -2797,9 +2797,9 @@ Media.prototype.Stop = function()
 Media.prototype.Pause = function()
 {
 	return post_to_url(Unity.Media.serviceName, &quot;Pause&quot;,  null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-GetState'>/**
 </span> * Gets Audio/Movie player state.
  * &lt;br&gt; @version 1.0
  * &lt;br/&gt;Possible values of media states: 
@@ -2814,9 +2814,9 @@ Media.prototype.Pause = function()
 Media.prototype.GetState = function()
 {
 	return post_to_url(Unity.Media.serviceName, &quot;GetState&quot;,  null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-GetCurrentMedia'>/**
 </span> * Gets the currently playing media file metadata.&lt;br/&gt;For further information see, {@link Unity.Media.MediaMetadata MediaMetadata}.
  * &lt;br&gt; @version 1.0
  * @return {Unity.Media.MediaMetadata} Current media file metadata.
@@ -2825,9 +2825,9 @@ Media.prototype.GetState = function()
 Media.prototype.GetCurrentMedia = function()
 {
 	return post_to_url(Unity.Media.serviceName, &quot;GetCurrentMedia&quot;,  null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-GetSnapshot'>/**
 </span> * Opens user interface view to select a picture from the device photos album.&lt;br/&gt;For further information see, {@link Unity.Media.MediaMetadata MediaMetadata}.
  * Data is provided via the proper event handled by the &quot;Unity.Media.onFinishedPickingImage&quot; method; please, override to handle the event.
  * Returned value is &quot;null&quot; on synchronous call.
@@ -2837,9 +2837,9 @@ Media.prototype.GetCurrentMedia = function()
 Media.prototype.GetSnapshot = function()
 {
 	return post_to_url(Unity.Media.serviceName, &quot;GetSnapshot&quot;,  null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Media-method-'>/**
+<span id='Unity-Media-method-TakeSnapshot'>/**
 </span> * Opens user interface view to take a picture using the device camera.&lt;br/&gt;For further information see, {@link Unity.Media.MediaMetadata MediaMetadata}.
  * Data is provided via the proper event handled by the &quot;Unity.Media.onFinishedPickingImage&quot; method; please, override to handle the event.
  * Returned value is &quot;null&quot; on synchronous call.
@@ -2849,7 +2849,7 @@ Media.prototype.GetSnapshot = function()
 Media.prototype.TakeSnapshot = function()
 {
 	return post_to_url(Unity.Media.serviceName, &quot;TakeSnapshot&quot;,  null, &quot;POST&quot;);
-}
+};
 
 <span id='Unity-Media-Async'>/**
 </span> * @class Unity.Media.Async 
@@ -3032,9 +3032,9 @@ Unity.Messaging = new Messaging();
 Messaging.prototype.SendMessageSMS = function(phoneNumber, text)
 {
 	return post_to_url(Unity.Messaging.serviceName, &quot;SendMessageSMS&quot;,  get_params([phoneNumber,text]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Messaging-method-'>/**
+<span id='Unity-Messaging-method-SendMessageMMS'>/**
 </span> * Sends a multimedia message (MMS).
  * &lt;br&gt; @version 1.0
  * @param {String} phoneNumber The phone address to send the message to.
@@ -3046,9 +3046,9 @@ Messaging.prototype.SendMessageSMS = function(phoneNumber, text)
 Messaging.prototype.SendMessageMMS = function(phoneNumber, text, attachment)
 {
 	return post_to_url(Unity.Messaging.serviceName, &quot;SendMessageMMS&quot;,  get_params([phoneNumber,text, attachment]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Messaging-method-'>/**
+<span id='Unity-Messaging-method-SendEmail'>/**
 </span> * Sends an email message.&lt;br/&gt;For further information see, {@link Unity.Messaging.EmailData EmailData}.
  * &lt;br&gt; @version 1.0
  * @param {EmailData} emailData The email message data, such as: subject, 'To','Cc','Bcc' addresses, etc.
@@ -3058,7 +3058,7 @@ Messaging.prototype.SendMessageMMS = function(phoneNumber, text, attachment)
 Messaging.prototype.SendEmail = function(emailData)
 {
 	return post_to_url(Unity.Messaging.serviceName, &quot;SendEmail&quot;,  get_params([emailData]), &quot;POST&quot;);
-}
+};
 
 /*
  * PIM INTERFACES
@@ -3345,9 +3345,9 @@ Pim.prototype.ListContacts = function(queryText)
 	} else {
 		return post_to_url(Unity.Pim.serviceName, &quot;ListContacts&quot;,  get_params([queryText]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-Pim-method-'>/**
+<span id='Unity-Pim-method-CreateContact'>/**
 </span> * Creates a Contact based on given contact data. &lt;br/&gt;For further information see, {@link Unity.Pim.Contact Contact}.
  * &lt;br&gt; @version 1.0
  * @param {Contact} contact Contact data to be created.
@@ -3357,9 +3357,9 @@ Pim.prototype.ListContacts = function(queryText)
 Pim.prototype.CreateContact = function(contact)
 {
 	return post_to_url(Unity.Pim.serviceName, &quot;CreateContact&quot;,  get_params([contact]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Pim-method-'>/**
+<span id='Unity-Pim-method-UpdateContact'>/**
 </span> * Updates contact data (given its ID) with the given contact data. &lt;br/&gt;For further information see, {@link Unity.Pim.Contact Contact}.
  * &lt;br&gt; @version 1.0
  * @param {string} contactId Contact identifier to be updated with new data.
@@ -3370,9 +3370,9 @@ Pim.prototype.CreateContact = function(contact)
 Pim.prototype.UpdateContact = function(contactId, newContactData)
 {
 	return post_to_url(Unity.Pim.serviceName, &quot;UpdateContact&quot;,  get_params([contactId,newContactData]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Pim-method-'>/**
+<span id='Unity-Pim-method-DeleteContact'>/**
 </span> * Deletes the given contact. &lt;br/&gt;For further information see, {@link Unity.Pim.Contact Contact}.
  * &lt;br&gt; @version 1.0
  * @param {Contact} contact Contact data to be deleted.
@@ -3382,9 +3382,9 @@ Pim.prototype.UpdateContact = function(contactId, newContactData)
 Pim.prototype.DeleteContact = function(contact)
 {
 	return post_to_url(Unity.Pim.serviceName, &quot;DeleteContact&quot;,  get_params([contact]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Pim-method-'>/**
+<span id='Unity-Pim-method-ListCalendarEntriesByDate'>/**
 </span> * Lists calendar entries for given date. &lt;br/&gt;For further information see, {@link Unity.Pim.CalendarEntry CalendarEntry}.
  * &lt;br&gt; @version 1.0
  * @param {DateTime} date Date to match calendar entries.
@@ -3394,9 +3394,9 @@ Pim.prototype.DeleteContact = function(contact)
 Pim.prototype.ListCalendarEntriesByDate = function(date)
 {
 	return post_to_url(Unity.Pim.serviceName, &quot;ListCalendarEntries&quot;,  get_params([date]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Pim-method-'>/**
+<span id='Unity-Pim-method-ListCalendarEntriesByDateRange'>/**
 </span> * Lists calendar entries between given start and end dates. &lt;br/&gt;For further information see, {@link Unity.Pim.CalendarEntry CalendarEntry}.
  * &lt;br&gt; @version 1.0
  * @param {DateTime} startDate Start date to match calendar entries.
@@ -3407,9 +3407,9 @@ Pim.prototype.ListCalendarEntriesByDate = function(date)
 Pim.prototype.ListCalendarEntriesByDateRange = function(startDate, endDate)
 {
 	return post_to_url(Unity.Pim.serviceName, &quot;ListCalendarEntries&quot;,  get_params([startDate,endDate]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Pim-method-'>/**
+<span id='Unity-Pim-method-CreateCalendarEntry'>/**
 </span> * Creates a calendar entry. &lt;br/&gt;For further information see, {@link Unity.Pim.CalendarEntry CalendarEntry}.
  * &lt;br&gt; @version 1.0
  * @param {CalendarEntry} entry Calendar entry to be created.
@@ -3419,9 +3419,9 @@ Pim.prototype.ListCalendarEntriesByDateRange = function(startDate, endDate)
 Pim.prototype.CreateCalendarEntry = function(entry)
 {
 	return post_to_url(Unity.Pim.serviceName, &quot;CreateCalendarEntry&quot;,  get_params([entry]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Pim-method-'>/**
+<span id='Unity-Pim-method-DeleteCalendarEntry'>/**
 </span> * Deletes the given calendar entry. &lt;br/&gt;For further information see, {@link Unity.Pim.CalendarEntry CalendarEntry}.
  * &lt;br&gt; @version 1.0
  * @param {CalendarEntry} entry Calendar entry to be deleted.
@@ -3431,9 +3431,9 @@ Pim.prototype.CreateCalendarEntry = function(entry)
 Pim.prototype.DeleteCalendarEntry = function(entry)
 {
 	return post_to_url(Unity.Pim.serviceName, &quot;DeleteCalendarEntry&quot;,  get_params([entry]), &quot;POST&quot;);
-}
+};
 
-<span id='Unity-Pim-method-'>/**
+<span id='Unity-Pim-method-MoveCalendarEntry'>/**
 </span> * Moves the given calendar entry to the new start and end dates. &lt;br/&gt;For further information see, {@link Unity.Pim.CalendarEntry CalendarEntry}.
  * &lt;br&gt; @version 1.0
  * @param {CalendarEntry} entry Calendar entry to be moved. 
@@ -3445,7 +3445,7 @@ Pim.prototype.DeleteCalendarEntry = function(entry)
 Pim.prototype.MoveCalendarEntry = function(entry, startDate, endDate)
 {
 	return post_to_url(Unity.Pim.serviceName, &quot;MoveCalendarEntry&quot;,  get_params([entry,startDate,endDate]), &quot;POST&quot;);
-}
+};
 
 /*
  * TELEPHONY INTERFACES
@@ -3547,7 +3547,7 @@ Unity.Telephony = new Telephony();
 Telephony.prototype.Call = function(number, callType)
 {
 	return post_to_url(Unity.Telephony.serviceName, &quot;Call&quot;,  get_params([number,callType]), &quot;POST&quot;);
-}
+};
 
 /*
  * I18N INTERFACES
@@ -3585,9 +3585,9 @@ Unity.I18N = new I18N();
 I18N.prototype.GetLocaleSupported = function()
 {
 	return post_to_url(Unity.I18N.serviceName, &quot;GetLocaleSupported&quot;,  null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-I18N-method-'>/**
+<span id='Unity-I18N-method-GetLocaleSupportedDescriptors'>/**
 </span> * List of supported locales for the application (the ones configured on the '/app/config/i18n-config.xml' file).
  * &lt;br/&gt;For further information see, {@link Unity.I18N.Locale Locale}. 
  * &lt;br&gt; @version 1.0
@@ -3597,9 +3597,9 @@ I18N.prototype.GetLocaleSupported = function()
 I18N.prototype.GetLocaleSupportedDescriptors = function()
 {
 	return post_to_url(Unity.I18N.serviceName, &quot;GetLocaleSupportedDescriptors&quot;,  null, &quot;POST&quot;);
-}
+};
 
-<span id='Unity-I18N-method-'>/**
+<span id='Unity-I18N-method-GetResourceLiteral'>/**
 </span> * Gets the text/message corresponding to the given key and locale.
  * &lt;br/&gt;For further information see, {@link Unity.I18N.Locale Locale}.
  * &lt;br&gt; @version 1.0
@@ -3615,9 +3615,9 @@ I18N.prototype.GetResourceLiteral = function(key, locale)
 	} else {
 		return post_to_url(Unity.I18N.serviceName, &quot;GetResourceLiteral&quot;,  get_params([key,locale]), &quot;POST&quot;);
 	}
-}
+};
 
-<span id='Unity-I18N-method-'>/**
+<span id='Unity-I18N-method-GetResourceLiterals'>/**
 </span> * Gets the full application configured literals (key/message pairs) corresponding to the given locale.
  * &lt;br/&gt;For further information see, {@link Unity.I18N.Locale Locale} and {@link Unity.I18N.ResourceLiteralDictionary ResourceLiteralDictionary}.
  * &lt;br&gt; @version 3.2
@@ -3632,7 +3632,7 @@ I18N.prototype.GetResourceLiterals = function(locale)
 	} else {
 		return post_to_url(Unity.I18N.serviceName, &quot;GetResourceLiterals&quot;,  get_params([locale]), &quot;POST&quot;);
 	}
-}
+};
 
 /*
  * LOG INTERFACES
@@ -3675,7 +3675,7 @@ Log.prototype.Log = function(message, level)
 	} else {
 		return post_to_url(Unity.Log.serviceName, &quot;Log&quot;,  get_params([message,key]), &quot;POST&quot;);
 	}
-}
+};
 
 /*
  * ANALYTICS INTERFACES
@@ -3784,7 +3784,7 @@ Unity.Security = new Security();
 Security.prototype.IsDeviceModified = function()
 {
 	return post_to_url(Unity.Security.serviceName, &quot;IsDeviceModified&quot;, null,&quot;POST&quot;);
-}
+};
 
 /*
  * WEBTREKK INTERFACES
