@@ -34,7 +34,7 @@ Unity = new function() {
 };
 
 Unity={
-	version:&quot;3.7&quot;,
+	version:&quot;3.8&quot;,
 	
 <span id='Unity-method-init'>	/**
 </span>     * Initialization function
@@ -153,12 +153,12 @@ Unity.backButtonListener = function() {};
  * @method
  */
 Unity._toBackground = function() {
-	Unity._background  = true;
-	
 	//call overrided function to inform application that we are about to put application on background
-	if(Unity.backgroundApplicationListener &amp;&amp; typeof Unity.backgroundApplicationListener == &quot;function&quot;){
+	if(Unity.backgroundApplicationListener &amp;&amp; typeof Unity.backgroundApplicationListener == &quot;function&quot; &amp;&amp; !Unity._background){
 		Unity.backgroundApplicationListener();
 	}
+	// setting flag after calling backgroundApplicationListener; a unity service call could be executed in that listener
+	Unity._background  = true;
 }
 
 
@@ -205,6 +205,14 @@ window.onorientationchange = updateOrientation;
  */
 Unity.SERVICE_URI = '/service/';
 
+<span id='Unity-property-SERVICE_ASYNC_URI'>/**
+</span> * Relative URI to access Unity Local Services in Asynchronous mode.
+ * &lt;pre&gt;Default value: '/service-async/'.&lt;/pre&gt;
+ * &lt;br&gt; @version 3.8
+ * @type String
+ */
+Unity.SERVICE_ASYNC_URI = '/service-async/';
+
 <span id='Unity-property-REMOTE_RESOURCE_URI'>/**
 </span> * Relative URI to access Unity Remote Resources.
  * &lt;pre&gt;Default value: '/proxy/'.&lt;/pre&gt;
@@ -226,6 +234,7 @@ if(typeof(LOCAL_SERVER_PORT)==&quot;undefined&quot;) {
 }
 
 Unity.SERVICE_URI = 'http://127.0.0.1:' + LOCAL_SERVER_PORT + Unity.SERVICE_URI;
+Unity.SERVICE_ASYNC_URI = 'http://127.0.0.1:' + LOCAL_SERVER_PORT + Unity.SERVICE_ASYNC_URI;
 Unity.REMOTE_RESOURCE_URI = 'http://127.0.0.1:' + LOCAL_SERVER_PORT + Unity.REMOTE_RESOURCE_URI;
 Unity.DOCUMENTS_RESOURCE_URI = 'http://127.0.0.1:' + LOCAL_SERVER_PORT + Unity.DOCUMENTS_RESOURCE_URI;
 
@@ -413,8 +422,12 @@ Net.prototype.DownloadFile = function(url)
 <span id='Unity-Net-Async'>/** 
 </span> * @class Unity.Net.Async 
  * Invokes all Net API methods asynchronously.
- * Callback function is passed to the methods (last argument) to handle the result object when it is received from unity runtime.
- * &lt;pre&gt;Usage: Unity.Net.&lt;b&gt;Async&lt;/b&gt;.IsNetworkReachable('gft.com', function(result){ &lt;br&gt;	...//code here your custom functionality to handle the result... &lt;br&gt;}).&lt;/pre&gt;
+ * &lt;br&gt;
+ * Callback function name and callback identifier are passed to the methods (last arguments) to handle the result object when it is received from unity runtime.
+ * &lt;pre&gt;Usage:
+ * &lt;br&gt; var myCallbackFn = function(result, id){ &lt;br&gt;	...//code here your custom functionality to handle the result... &lt;br&gt;}
+ * &lt;br&gt;Unity.Net.&lt;b&gt;Async&lt;/b&gt;.IsNetworkReachable('gft.com', 'myCallbackFn', 'myId').
+ * &lt;/pre&gt;
  */
 Net.prototype.Async = {
 
@@ -423,47 +436,51 @@ Net.prototype.Async = {
 </span> * Detects ASYNC if network is reachable or not. 
  * &lt;br&gt; @version 2.0
  * @param {String} url The host url to check for reachability.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True/false if reachable.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-IsNetworkReachable : function(url, callbackFunction)
+IsNetworkReachable : function(url, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Net.serviceName, &quot;IsNetworkReachable&quot;, get_params([url]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Net.serviceName, &quot;IsNetworkReachable&quot;, get_params([url]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Net-Async-method-GetNetworkTypeSupported'>/**
 </span> * Gets ASYNC the network types currently supported by this device.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: int[] Array of supported network types. 
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetNetworkTypeSupported : function(callbackFunction)
+GetNetworkTypeSupported : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Net.serviceName, &quot;GetNetworkTypeSupported&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Net.serviceName, &quot;GetNetworkTypeSupported&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Net-Async-method-GetNetworkTypeReachableList'>/**
 </span> * Gets ASYNC the network types from which this device is able to reach the given url host. Preference ordered list.
  * &lt;br&gt; @version 2.0
  * @param {String} url The host url to check for reachability.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: int[] Array of network types from which given url host is reachable. 
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetNetworkTypeReachableList : function(url, callbackFunction)
+GetNetworkTypeReachableList : function(url, callbackFunctionName, callbackId)
 {
-    post_to_url_async(Unity.Net.serviceName, &quot;GetNetworkTypeReachableList&quot;, get_params([url]), &quot;POST&quot;, callbackFunction);
+    post_to_url_async(Unity.Net.serviceName, &quot;GetNetworkTypeReachableList&quot;, get_params([url]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Net-Async-method-GetNetworkTypeReachable'>/**
 </span> * Gets ASYNC the prefered network type from which this device is able to reach the given url host.
  * &lt;br&gt; @version 2.0
  * @param {String} url The host url to check for reachability.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: int Prefered network type from which given url host is reachable. 
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetNetworkTypeReachable : function(url, callbackFunction)
+GetNetworkTypeReachable : function(url, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Net.serviceName, &quot;GetNetworkTypeReachable&quot;, get_params([url]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Net.serviceName, &quot;GetNetworkTypeReachable&quot;, get_params([url]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Net-Async-method-OpenBrowser'>/**
@@ -472,12 +489,13 @@ GetNetworkTypeReachable : function(url, callbackFunction)
  * @param {String} title The title of the Navigation Bar.
  * @param {String} buttonText The Back Button text of the Navigation Bar.
  * @param {String} url The url to be opened.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True on successful 
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-OpenBrowser : function(title, buttonText, url, callbackFunction)
+OpenBrowser : function(title, buttonText, url, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Net.serviceName, &quot;OpenBrowser&quot;, get_params([title, buttonText, url]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Net.serviceName, &quot;OpenBrowser&quot;, get_params([title, buttonText, url]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Net-Async-method-ShowHtml'>/**
@@ -486,12 +504,13 @@ OpenBrowser : function(title, buttonText, url, callbackFunction)
  * @param {String} title The title of the Navigation Bar.
  * @param {String} buttonText The Back Button text of the Navigation Bar.
  * @param {String} htmls The html string to be rendered.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True on successful 
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-ShowHtml : function(title, buttonText, html, callbackFunction)
+ShowHtml : function(title, buttonText, html, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Net.serviceName, &quot;ShowHtml&quot;, get_params([title, buttonText, html]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Net.serviceName, &quot;ShowHtml&quot;, get_params([title, buttonText, html]), callbackFunctionName, callbackId);
 }
 
 
@@ -1086,6 +1105,18 @@ System.prototype.DismissSplashScreen = function()
 	return post_to_url(Unity.System.serviceName, &quot;DismissSplashScreen&quot;, null, &quot;POST&quot;);
 }
 
+<span id='Unity-System-method-'>/**
+</span> * Dismisses the current application programmatically.
+ * It is up to the HTML app to manage the state and determine when to close the application using this method.
+ * &lt;br&gt; &lt;b&gt;This feature is not supported on iOS platform (interface is available, but with no effect)&lt;b&gt;
+ * &lt;br&gt; @version 3.8
+ * @method
+ */
+System.prototype.DismissApplication = function()
+{
+	post_to_url(Unity.System.serviceName, &quot;DismissApplication&quot;, null, &quot;POST&quot;);
+}
+
 
 /*
  * DATABASE INTERFACES
@@ -1283,44 +1314,53 @@ Database.prototype.ExecuteSQLTransaction = function(db, statements, rollbackFlag
 <span id='Unity-Database-Async'>/**
 </span> * @class Unity.Database.Async 
  * Invokes all Database API methods asynchronously.
- * Callback function is passed to the methods (last argument) to handle the result object when it is received from unity runtime.
+ * &lt;br&gt;
+ * Callback function name and callback identifier are passed to the methods (last arguments) to handle the result object when it is received from unity runtime.
+ * &lt;pre&gt;Usage:
+ * &lt;br&gt; var myCallbackFn = function(result, id){ &lt;br&gt;	...//code here your custom functionality to handle the result... &lt;br&gt;}
+ * &lt;br&gt;Unity.Database.&lt;b&gt;Async&lt;/b&gt;.GetDatabaseList('myCallbackFn', 'myId').
+ * &lt;br&gt;or
+ * &lt;br&gt;Unity.Database.&lt;b&gt;Async&lt;/b&gt;.GetDatabase('databaseName', 'myCallbackFn', 'myId').
+ * &lt;/pre&gt;
  */
 Database.prototype.Async = {
 
 <span id='Unity-Database-Async-method-GetDatabaseList'>/**
 </span> * Gets stored databases, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Database[] List of application Databases.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetDatabaseList : function(callbackFunction)
+GetDatabaseList : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;GetDatabaseList&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;GetDatabaseList&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Database-Async-method-CreateDatabase'>/**
 </span> * Creates database on default path, in ASYNC mode.
  * &lt;br&gt; @version 2.0
  * @param {String} dbName The database file name (please include .db extension).
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Database The created database reference object.
- * @method
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
+* @method
  */
-CreateDatabase : function(dbName, callbackFunction)
+CreateDatabase : function(dbName, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;CreateDatabase&quot;, get_params([dbName]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;CreateDatabase&quot;, get_params([dbName]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Database-Async-method-GetDatabase'>/**
 </span> * Gets database reference object by given name, in ASYNC mode.
  * &lt;br&gt;Databases are located on the default database path: /&lt;PersonalFolder&gt;/sqlite/
  * &lt;br&gt; @version 2.0
- * @param {String} dbName The database file name (inlcuding .db extension).
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Database The created database reference object.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetDatabase : function(dbName, callbackFunction)
+GetDatabase : function(dbName, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;GetDatabase&quot;, get_params([dbName]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;GetDatabase&quot;, get_params([dbName]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Database-Async-method-CreateTable'>/**
@@ -1329,24 +1369,26 @@ GetDatabase : function(dbName, callbackFunction)
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase} ).
  * @param {String} tableName The table name to be inserted.
  * @param {String[]} columnsDefs The column definitions array (SQLITE syntax).
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True on successful table creation.
- * @method
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
+* @method
  */
-CreateTable : function(db,tableName,columnsDefs, callbackFunction)
+CreateTable : function(db,tableName,columnsDefs, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;CreateTable&quot;, get_params([db,tableName, columnsDefs]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;CreateTable&quot;, get_params([db,tableName, columnsDefs]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Database-Async-method-DeleteDatabase'>/**
 </span> * Deletes database on default path, in ASYNC mode.
  * &lt;br&gt; @version 2.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}) to be deleted.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True on successful database deletion.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-DeleteDatabase : function(db, callbackFunction)
+DeleteDatabase : function(db, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;DeleteDatabase&quot;, get_params([db]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;DeleteDatabase&quot;, get_params([db]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Database-Async-method-DeleteTable'>/**
@@ -1354,24 +1396,26 @@ DeleteDatabase : function(db, callbackFunction)
  * &lt;br&gt; @version 2.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase} ).
  * @param {String} tableName The table name to be deleted.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True on successful table deletion.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-DeleteTable : function(db,tableName, callbackFunction)
+DeleteTable : function(db,tableName, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;DeleteTable&quot;, get_params([db,tableName]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;DeleteTable&quot;, get_params([db,tableName]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Database-Async-method-GetTableNames'>/**
 </span> * Gets table names from the given database, in ASYNC mode.
  * &lt;br&gt; @version 1.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}) to check for table names.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: String[] List of table names.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetTableNames : function(db, callbackFunction)
+GetTableNames : function(db, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;GetTableNames&quot;, get_params([db]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;GetTableNames&quot;, get_params([db]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Database-Async-method-Exists'>/**
@@ -1380,15 +1424,16 @@ GetTableNames : function(db, callbackFunction)
  * &lt;br&gt; @version 2.0
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}).
  * @param {String} tableName The table name  to check for existence. Optional parameter.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if database or database table exists.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-Exists : function(db, tableName, callbackFunction)
+Exists : function(db, tableName, callbackFunctionName, callbackId)
 {
 	if(tableName == null) {
-        post_to_url_async(Unity.Database.serviceName, &quot;Exists&quot;, get_params([db]), &quot;POST&quot;, callbackFunction);
+        post_to_url_async(Unity.Database.serviceName, &quot;Exists&quot;, get_params([db]), callbackFunctionName, callbackId);
 	} else {
-		post_to_url_async(Unity.Database.serviceName, &quot;Exists&quot;, get_params([db,tableName]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Database.serviceName, &quot;Exists&quot;, get_params([db,tableName]), callbackFunctionName, callbackId);
 	}
 },
 
@@ -1396,12 +1441,13 @@ Exists : function(db, tableName, callbackFunction)
 </span> * Checks if database exists by given database name (including .db extension), in ASYNC mode.
  * &lt;br&gt; @version 2.0
  * @param {String} dbName The database name to check for existence.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if database exists.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-ExistsDatabase : function(dbName, callbackFunction)
+ExistsDatabase : function(dbName, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;ExistsDatabase&quot;, get_params([dbName]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;ExistsDatabase&quot;, get_params([dbName]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Database-Async-method-ExecuteSQLQuery'>/**
@@ -1410,15 +1456,16 @@ ExistsDatabase : function(dbName, callbackFunction)
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}).
  * @param {String} query The SQL query to execute. 
  * @param {String[]} replacements The replacement arguments for a preformatted SQL query. Optional parameter.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: ResultSet The result set (with zero rows count parameter if no rows satisfy query conditions).
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-ExecuteSQLQuery : function(db, query, replacements, callbackFunction)
+ExecuteSQLQuery : function(db, query, replacements, callbackFunctionName, callbackId)
 {
 	if(replacements == null) {
-		post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLQuery&quot;, get_params([db,query]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLQuery&quot;, get_params([db,query]), callbackFunctionName, callbackId);
 	} else {
-		post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLQuery&quot;, get_params([db,query,replacements]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLQuery&quot;, get_params([db,query,replacements]), callbackFunctionName, callbackId);
 	}
 },
 
@@ -1428,15 +1475,16 @@ ExecuteSQLQuery : function(db, query, replacements, callbackFunction)
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}).
  * @param {String} statement The SQL statement to execute. 
  * @param {String[]} replacements The replacement arguments for a preformatted SQL statement. Optional parameter.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True on successful statement execution.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-ExecuteSQLStatement : function(db, statement, replacements, callbackFunction)
+ExecuteSQLStatement : function(db, statement, replacements, callbackFunctionName, callbackId)
 {
 	if(replacements == null) {
-		post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLStatement&quot;, get_params([db,statement]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLStatement&quot;, get_params([db,statement]), callbackFunctionName, callbackId);
 	} else {
-		post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLStatement&quot;, get_params([db,statement,replacements]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLStatement&quot;, get_params([db,statement,replacements]), callbackFunctionName, callbackId);
 	}
 },
 
@@ -1446,12 +1494,13 @@ ExecuteSQLStatement : function(db, statement, replacements, callbackFunction)
  * @param {Unity.Database.Database} db The database object reference (as provided by {@link #GetDatabase}).
  * @param {String[]} statements The statements to be executed during transaction (sqlite syntax language).. 
  * @param {Boolean} rollbackFlag Indicates if rollback should be performed when any statement execution fails.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True on successful transaction execution.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-ExecuteSQLTransaction : function(db, statements, rollbackFlag, callbackFunction)
+ExecuteSQLTransaction : function(db, statements, rollbackFlag, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLTransaction&quot;, get_params([db,statements,rollbackFlag]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Database.serviceName, &quot;ExecuteSQLTransaction&quot;, get_params([db,statements,rollbackFlag]), callbackFunctionName, callbackId);
 }
 
 };
@@ -1873,41 +1922,51 @@ Notification.prototype.StopNotifyVibrate = function()
 <span id='Unity-Notification-Async'>/**
 </span> * @class Unity.Notification.Async
  * Invokes all Notification API methods asynchronously.
- * Callback function is passed to the methods (last argument) to handle the result object when it is received from unity runtime.
+ * &lt;br&gt;
+ * Callback function name and callback identifier are passed to the methods (last arguments) to handle the result object when it is received from unity runtime.
+ * &lt;pre&gt;Usage:
+ * &lt;br&gt; var myCallbackFn = function(result, id){ &lt;br&gt;	...//code here your custom functionality to handle the result... &lt;br&gt;}
+ * &lt;br&gt;Unity.Notification.&lt;b&gt;Async&lt;/b&gt;.StartNotifyActivity('myCallbackFn', 'myId').
+ * &lt;br&gt;or
+ * &lt;br&gt;Unity.Notification.&lt;b&gt;Async&lt;/b&gt;.StartNotifyLoading('loading text', 'myCallbackFn', 'myId').
+ * &lt;/pre&gt;
  */
 Notification.prototype.Async = {
 
 <span id='Unity-Notification-Async-method-StartNotifyActivity'>/**
 </span> * Shows and starts the activity indicator animation, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: True if activity indicator could be started.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StartNotifyActivity : function(callbackFunction)
+StartNotifyActivity : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyActivity&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyActivity&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StopNotifyActivity'>/**
 </span> * Stops and hides the activity indicator animation, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if activity indicator could be stopped.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StopNotifyActivity : function(callbackFunction)
+StopNotifyActivity : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyActivity&quot;, null, &quot;POST&quot;,callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyActivity&quot;, null, &quot;POST&quot;,callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-IsNotifyActivityRunning'>/**
 </span> * Checks if activity indicator animation is started, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True/false wheter activity indicator is running.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-IsNotifyActivityRunning : function(callbackFunction)
+IsNotifyActivityRunning : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;IsNotifyActivityRunning&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;IsNotifyActivityRunning&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StartNotifyAlert'>/**
@@ -1916,27 +1975,29 @@ IsNotifyActivityRunning : function(callbackFunction)
  * @param {String} message The alert message to be displayed.
  * @param {String} title The alert title to be displayed.
  * @param {String} buttonText The accept button text to be displayed.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if alert notification could be started.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StartNotifyAlert : function(message, title, buttonText, callbackFunction)
+StartNotifyAlert : function(message, title, buttonText, callbackFunctionName, callbackId)
 {
 	if(title == null &amp;&amp; buttonText == null) {
-		post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyAlert&quot;, get_params([message]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyAlert&quot;, get_params([message]), callbackFunctionName, callbackId);
 	} else {
-		post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyAlert&quot;, get_params([title,message,buttonText]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyAlert&quot;, get_params([title,message,buttonText]), callbackFunctionName, callbackId);
 	}
 },
 
 <span id='Unity-Notification-Async-method-StopNotifyAlert'>/**
 </span> * Stops an alert notification, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if alert notification could be stopped.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StopNotifyAlert : function(callbackFunction)
+StopNotifyAlert : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyAlert&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyAlert&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StartNotifyActionSheet'>/**
@@ -1945,127 +2006,138 @@ StopNotifyAlert : function(callbackFunction)
  * @param {String} title The title to be displayed on the action sheet.
  * @param {String[]} buttons Array of button texts to be displayed. First index button is the &quot;cancel&quot; button, default button.
  * @param {String[]} jsCallbackFunctions The callback javascript functions as string texts for each of the given buttons. Empty string if no action is required for a button.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if action sheet could be showed.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StartNotifyActionSheet : function(title, buttons, jsCallbackFunctions, callbackFunction)
+StartNotifyActionSheet : function(title, buttons, jsCallbackFunctions, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyActionSheet&quot;, get_params([title, buttons, jsCallbackFunctions]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyActionSheet&quot;, get_params([title, buttons, jsCallbackFunctions]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StartNotifyBeep'>/**
 </span> * Starts a beep notification, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if beep notification could be started.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StartNotifyBeep : function(callbackFunction)
+StartNotifyBeep : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyBeep&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyBeep&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StopNotifyBeep'>/**
 </span> * Stops the current beep notification, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if beep notification could be stopped.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StopNotifyBeep : function(callbackFunction)
+StopNotifyBeep : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyBeep&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyBeep&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StartNotifyBlink'>/**
 </span> * Starts a blink notification, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if beep notification could be started.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StartNotifyBlink : function(callbackFunction)
+StartNotifyBlink : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyBlink&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyBlink&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StopNotifyBlink'>/**
 </span> * Stops the current blink notification, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if blink notification could be stopped.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StopNotifyBlink : function(callbackFunction)
+StopNotifyBlink : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyBlink&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyBlink&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StartNotifyLoading'>/**
 </span> * Shows and starts the progress indicator animation, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if progress indicator animation could be started.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StartNotifyLoading : function(loadingText, callbackFunction)
+StartNotifyLoading : function(loadingText, callbackFunctionName, callbackId)
 {
 	if(loadingText == null) {
-		post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyLoading&quot;, null, &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyLoading&quot;, null, callbackFunctionName, callbackId);
 	} else {
-		post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyLoading&quot;, get_params([loadingText]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyLoading&quot;, get_params([loadingText]), callbackFunctionName, callbackId);
 	}
 },
 
 <span id='Unity-Notification-Async-method-StopNotifyLoading'>/**
 </span> * Stops the current progress indicator animation, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if progress indicator animation could be stopped.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StopNotifyLoading : function(callbackFunction)
+StopNotifyLoading : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyLoading&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyLoading&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-IsNotifyLoadingRunning'>/**
 </span> * Checks if progress indicator animation is started, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True/false wheter progress indicator is running.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-IsNotifyLoadingRunning : function(callbackFunction)
+IsNotifyLoadingRunning : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;IsNotifyLoadingRunning&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;IsNotifyLoadingRunning&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-UpdateNotifyLoading'>/**
 </span> * Updates the progress indicator animation, in ASYNC mode.
  * &lt;br&gt; @version 2.0
  * @param {float} progress The current progress; values between 0.0 and 1.0 (completed).
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: no result object for this API method.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-UpdateNotifyLoading : function(progress, callbackFunction)
+UpdateNotifyLoading : function(progress, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;UpdateNotifyLoading&quot;, get_params([progress]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;UpdateNotifyLoading&quot;, get_params([progress]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StartNotifyVibrate'>/**
 </span> * Starts a vibration notification, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if vibration notification could be started.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StartNotifyVibrate : function(callbackFunction)
+StartNotifyVibrate : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyVibrate&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StartNotifyVibrate&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Notification-Async-method-StopNotifyVibrate'>/**
 </span> * Stops the current vibration notification, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if vibration notification could be stopped.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-StopNotifyVibrate : function(callbackFunction)
+StopNotifyVibrate : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyVibrate&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Notification.serviceName, &quot;StopNotifyVibrate&quot;, null, callbackFunctionName, callbackId);
 }
 
 };
@@ -2229,19 +2301,27 @@ IO.prototype.InvokeService = function(requestObjt, service, serviceType)
 <span id='Unity-IO-Async'>/**
 </span> * @class Unity.IO.Async
  * Invokes all IO API methods asynchronously.
- * Callback function is passed to the methods (last argument) to handle the result object when it is received from unity runtime.
+ * &lt;br&gt;
+ * Callback function name and callback identifier are passed to the methods (last arguments) to handle the result object when it is received from unity runtime.
+ * &lt;pre&gt;Usage:
+ * &lt;br&gt; var myCallbackFn = function(result, id){ &lt;br&gt;	...//code here your custom functionality to handle the result... &lt;br&gt;}
+ * &lt;br&gt;Unity.IO.&lt;b&gt;Async&lt;/b&gt;.GetServices('myCallbackFn', 'myId').
+ * &lt;br&gt;or
+ * &lt;br&gt;Unity.IO.&lt;b&gt;Async&lt;/b&gt;.InvokeService(requestObjt, 'serviceName', null, 'myCallbackFn', 'myId').
+ * &lt;/pre&gt;
  */
 IO.prototype.Async = {
 
 <span id='Unity-IO-Async-method-GetServices'>/**
 </span> * Gets ASYNC the configured I/O services (the ones configured on the '/app/config/io-services-config.xml' file).
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: IOService[] List of external services.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetServices : function(callbackFunction)
+GetServices : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.IO.serviceName, &quot;GetServices&quot;, null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.IO.serviceName, &quot;GetServices&quot;, null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-IO-Async-method-GetService'>/**
@@ -2249,15 +2329,16 @@ GetServices : function(callbackFunction)
  * &lt;br&gt; @version 2.0
  * @param {String} serviceName The service name to look for.
  * @param {int} serviceType The service type to look for. Optional parameter.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: &quot;IOService&quot; The external service matched.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetService : function(serviceName, serviceType, callbackFunction)
+GetService : function(serviceName, serviceType, callbackFunctionName, callbackId)
 {
 	if(serviceType == null) {
-        post_to_url_async(Unity.IO.serviceName, &quot;GetService&quot;,get_params([serviceName]), &quot;POST&quot;, callbackFunction);
+        post_to_url_async(Unity.IO.serviceName, &quot;GetService&quot;,get_params([serviceName]), callbackFunctionName, callbackId);
 	} else {
-        post_to_url_async(Unity.IO.serviceName, &quot;GetService&quot;,get_params([serviceName,serviceType]), &quot;POST&quot;, callbackFunction);
+        post_to_url_async(Unity.IO.serviceName, &quot;GetService&quot;,get_params([serviceName,serviceType]), callbackFunctionName, callbackId);
 	}
 },
 
@@ -2267,15 +2348,16 @@ GetService : function(serviceName, serviceType, callbackFunction)
  * @param {IORequestObject} requestObjt The request object with the needed invocation parameters. Example:&lt;pre&gt;{&quot;Session&quot;:null,&quot;Content&quot;:&quot;{method:authenticationService.login,id:1,params:['username','password']}&quot;}&lt;/pre&gt;
  * @param {String/IOService} service This param could be a IOService object (as provided by {@link #GetService}), or only the service name. First service match would be invoked.
  * @param {int} serviceType The service type to look for. Optional parameter.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: IOResponse The response object returned from remote service. Access content doing: &lt;pre&gt;ioResponse.Content&lt;/pre&gt;.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-InvokeService : function(requestObjt, service, serviceType, callbackFunction)
+InvokeService : function(requestObjt, service, serviceType, callbackFunctionName, callbackId)
 {
 	if(serviceType == null) {
-        post_to_url_async(Unity.IO.serviceName, &quot;InvokeService&quot;,get_params([requestObjt,service]), &quot;POST&quot;, callbackFunction);
+        post_to_url_async(Unity.IO.serviceName, &quot;InvokeService&quot;,get_params([requestObjt,service]), callbackFunctionName, callbackId);
 	} else {
-        post_to_url_async(Unity.IO.serviceName, &quot;InvokeService&quot;,get_params([requestObjt,service,serviceType]), &quot;POST&quot;, callbackFunction);
+		post_to_url_async(Unity.IO.serviceName, &quot;InvokeService&quot;,get_params([requestObjt,service,serviceType]), callbackFunctionName, callbackId);
 	}
 }
 
@@ -2548,6 +2630,17 @@ Geo.prototype.StopProximitySensor = function()
 	return post_to_url(Unity.Geo.serviceName, &quot;StopProximitySensor&quot;, null, &quot;POST&quot;);
 }
 
+<span id='Unity-Geo-method-'>/**
+</span> * Determines whether the Location Services (GPS) is enabled.
+ * &lt;br&gt; @version 3.8
+ * @return {Boolean} True if the device can start the location services
+ * @method
+ */
+Geo.prototype.IsGPSEnabled = function()
+{
+	return post_to_url(Unity.Geo.serviceName, &quot;IsGPSEnabled&quot;, null, &quot;POST&quot;);
+}
+
 /*
  * MEDIA INTERFACES
  */
@@ -2761,7 +2854,14 @@ Media.prototype.TakeSnapshot = function()
 <span id='Unity-Media-Async'>/**
 </span> * @class Unity.Media.Async 
  * Invokes all Media API methods asynchronously.
- * Callback function is passed to the methods (last argument) to handle the result object when it is received from unity runtime.
+ * &lt;br&gt;
+ * Callback function name and callback identifier are passed to the methods (last arguments) to handle the result object when it is received from unity runtime.
+ * &lt;pre&gt;Usage:
+ * &lt;br&gt; var myCallbackFn = function(result, id){ &lt;br&gt;	...//code here your custom functionality to handle the result... &lt;br&gt;}
+ * &lt;br&gt;Unity.Media.&lt;b&gt;Async&lt;/b&gt;.Stop('myCallbackFn', 'myId').
+ * &lt;br&gt;or
+ * &lt;br&gt;Unity.Media.&lt;b&gt;Async&lt;/b&gt;.Play('filePath', 'myCallbackFn', 'myId').
+ * &lt;/pre&gt;
  */
 Media.prototype.Async = {
 
@@ -2769,92 +2869,100 @@ Media.prototype.Async = {
 </span> * Gets Media metadata, in ASYNC mode.
  * &lt;br&gt; @version 2.0
  * @param {String} filePath The media file path.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: MediaMetadata Media file metadata.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetMetadata : function(filePath, callbackFunction)
+GetMetadata : function(filePath, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;GetMetadata&quot;,  get_params([filePath]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;GetMetadata&quot;,  get_params([filePath]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-Play'>/**
 </span> * Starts playing media, in ASYNC mode.
  * &lt;br&gt; @version 2.0
  * @param {String} filePath The media file path.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if media file could be started.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-Play : function(filePath, callbackFunction)
+Play : function(filePath, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;Play&quot;,  get_params([filePath]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;Play&quot;,  get_params([filePath]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-PlayStream'>/**
 </span> * Starts playing media, in ASYNC mode.
  * &lt;br&gt; @version 2.0
  * @param {String} url The media remote URL.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if media file could be started.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-PlayStream : function(url, callbackFunction)
+PlayStream : function(url, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;PlayStream&quot;,  get_params([url]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;PlayStream&quot;,  get_params([url]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-SeekPosition'>/**
 </span> * Moves player to the given position in the media, in ASYNC mode.
  * &lt;br&gt; @version 2.0
  * @param {long} position Index position.
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if player position could be moved.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-SeekPosition : function(position, callbackFunction)
+SeekPosition : function(position, callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;SeekPosition&quot;,  get_params([position]), &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;SeekPosition&quot;,  get_params([position]), callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-Stop'>/**
 </span> * Stops the current media playing, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if media file could be stopped.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-Stop : function(callbackFunction)
+Stop : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;Stop&quot;,  null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;Stop&quot;,  null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-Pause'>/**
 </span> * Pauses the current media playing, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: Boolean True if media file could be stopped.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-Pause : function(callbackFunction)
+Pause : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;Pause&quot;,  null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;Pause&quot;,  null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-GetState'>/**
 </span> * Gets Audio/Movie player state, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: MediaState Current player state.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetState : function(callbackFunction)
+GetState : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;GetState&quot;,  null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;GetState&quot;,  null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-GetCurrentMedia'>/**
 </span> * Gets the currently playing media file metadata, in ASYNC mode.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: MediaMetadata Current media file metadata.
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetCurrentMedia : function(callbackFunction)
+GetCurrentMedia : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;GetCurrentMedia&quot;,  null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;GetCurrentMedia&quot;,  null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-GetSnapshot'>/**
@@ -2862,12 +2970,13 @@ GetCurrentMedia : function(callbackFunction)
  * Data is provided via the proper event handled by the &quot;Unity.Media.onFinishedPickingImage&quot; method; please, override to handle the event.
  * Returned value is &quot;null&quot; on synchronous call.
  * &lt;br&gt; @version 2.0
- * @param {Object} callbackFunction The function object to be called when the method response is handled. Argument to this function is the invocation result object: MediaMetadata Media file metadata picked from album. 
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @method
  */
-GetSnapshot : function(callbackFunction)
+GetSnapshot : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;GetSnapshot&quot;,  null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;GetSnapshot&quot;,  null, callbackFunctionName, callbackId);
 },
 
 <span id='Unity-Media-Async-method-TakeSnapshot'>/**
@@ -2875,12 +2984,14 @@ GetSnapshot : function(callbackFunction)
  * Data is provided via the proper event handled by the &quot;Unity.Media.onFinishedPickingImage&quot; method; please, override to handle the event.
  * Returned value is &quot;null&quot; on synchronous call.
  * &lt;br&gt; @version 2.0
+ * @param {String} callbackFunctionName The name of the callback function to be called when the method response is handled. Arguments of this function are the invocation result object and the invocation callbackId. Defaults to &quot;callback&quot;.
+ * @param {String} callbackId The id to uniquely identify different callbacks with the same callback function. Defaults to &quot;callbackid&quot;.
  * @return {Unity.Media.MediaMetadata} Media file metadata taken by the camera. 
  * @method
  */
-TakeSnapshot : function(callbackFunction)
+TakeSnapshot : function(callbackFunctionName, callbackId)
 {
-	post_to_url_async(Unity.Media.serviceName, &quot;TakeSnapshot&quot;,  null, &quot;POST&quot;, callbackFunction);
+	post_to_url_async(Unity.Media.serviceName, &quot;TakeSnapshot&quot;,  null, callbackFunctionName, callbackId);
 }
 
 };
@@ -3675,12 +3786,280 @@ Security.prototype.IsDeviceModified = function()
 	return post_to_url(Unity.Security.serviceName, &quot;IsDeviceModified&quot;, null,&quot;POST&quot;);
 }
 
+/*
+ * WEBTREKK INTERFACES
+ */
+
+<span id='Unity-Webtrekk-method-constructor'><span id='Unity-Webtrekk'>/**
+</span></span> * @class Unity.Webtrekk
+ * Singleton class field to access Webtrekk interface. 
+ * &lt;br&gt;This interface provides features to track application usage and send to Webtrekk.&lt;br&gt;
+ * &lt;br&gt; @version 3.8
+ * &lt;pre&gt;Usage: Unity.Webtrekk.&amp;lt;metodName&amp;gt;([params]).&lt;br&gt;Example: Unity.Webtrekk.TrackContent('/mycontent').&lt;/pre&gt;
+ * @singleton
+ * @constructor Constructs a new Webtrekk interface.
+ * @return {Unity.Webtrekk} A new Webtrekk interface.
+ */
+Webtrekk = function(){
+<span id='Unity-Webtrekk-property-serviceName'>        /**
+</span>	 * Webtrekk service name (as configured on Platform Service Locator).
+	 * @type String
+	 * &lt;br&gt; @version 3.8
+	 */
+    this.serviceName = &quot;webtrekk&quot;;
+
+<span id='Unity-Webtrekk-property-COUNTRY_CODE'>    /**
+</span>     * Country code of the client's language settings (e.g 'de').
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.COUNTRY_CODE = &quot;la&quot;;
+
+<span id='Unity-Webtrekk-property-ORDER_VALUE'>	/**
+</span>     * Order value.
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.ORDER_VALUE = &quot;ov&quot;;
+
+<span id='Unity-Webtrekk-property-ORDER_ID'>	/**
+</span>     * Order ID.
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.ORDER_ID = &quot;oi&quot;;
+
+<span id='Unity-Webtrekk-property-SHOPPING_BASKET'>	/**
+</span>     * Products in shopping basket.
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.SHOPPING_BASKET = &quot;ba&quot;;
+
+<span id='Unity-Webtrekk-property-PRODUCTS_COSTS'>	/**
+</span>     * Product costs.
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.PRODUCTS_COSTS = &quot;co&quot;;
+
+<span id='Unity-Webtrekk-property-NUMBER_OF_PRODUCTS'>	/**
+</span>     * Number of products.
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.NUMBER_OF_PRODUCTS = &quot;qn&quot;;
+
+<span id='Unity-Webtrekk-property-PRODUCT_CATEGORY_1'>	/**
+</span>     * Product category. Value is 'ca1' but you can add more categories by using 'ca2', 'ca3', etc...
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.PRODUCT_CATEGORY_1 = &quot;ca1&quot;;
+
+<span id='Unity-Webtrekk-property-STATUS_SHOPPING_BASKET'>	/**
+</span>     * Status of the shopping basket (add|conf|view).
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.STATUS_SHOPPING_BASKET = &quot;st&quot;;
+
+<span id='Unity-Webtrekk-property-CUSTOMER_ID'>	/**
+</span>     * Customer ID
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.CUSTOMER_ID = &quot;cd&quot;;
+
+<span id='Unity-Webtrekk-property-SEARCH_TERM'>	/**
+</span>     * Search term of internal search function.
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.SEARCH_TERM = &quot;is&quot;;
+
+<span id='Unity-Webtrekk-property-CAMPAIGN_ID'>	/**
+</span>     * Campaign ID consistinf od media code parameter and value ('wt_mc=newsletter')
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.CAMPAIGN_ID = &quot;mc&quot;;
+
+<span id='Unity-Webtrekk-property-CONTENT_GROUP'>	/**
+</span>     * Content Group. Value is 'cg1' but you can add more categories by using 'cg2', 'cg3', etc...
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.CONTENT_GROUP = &quot;cg1&quot;;
+
+<span id='Unity-Webtrekk-property-PAGE_PARAMETER'>	/**
+</span>     * Page parameter. Value is 'cp1' but you can add more categories by using 'cp2', 'cp3', etc...
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.PAGE_PARAMETER = &quot;cp1&quot;;
+
+<span id='Unity-Webtrekk-property-SESSION_PARAMETER'>	/**
+</span>     * Session parameter. Value is 'cs1' but you can add more categories by using 'cs2', 'cs3', etc...
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.SESSION_PARAMETER = &quot;cs1&quot;;
+
+<span id='Unity-Webtrekk-property-ACTION_PARAMETER'>	/**
+</span>     * Action parameter. Value is 'ck1' but you can add more categories by using 'ck2', 'ck3', etc...
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.ACTION_PARAMETER = &quot;ck1&quot;;
+
+<span id='Unity-Webtrekk-property-INDEPENDENT_PARAMETER'>	/**
+</span>     * Independent parameter. Value is 'ce1' but you can add more categories by using 'ce2', 'ce3', etc...
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.INDEPENDENT_PARAMETER = &quot;ce1&quot;;
+
+<span id='Unity-Webtrekk-property-CAMPAIGN_PARAMETER'>	/**
+</span>     * Campaign parameter. Value is 'cc1' but you can add more categories by using 'cc2', 'cc3', etc...
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.CAMPAIGN_PARAMETER = &quot;cc1&quot;;
+
+<span id='Unity-Webtrekk-property-ECOMMERCE_PARAMETER'>	/**
+</span>     * E-commerce parameter. Value is 'cb1' but you can add more categories by using 'cb2', 'cb3', etc...
+	 * &lt;br&gt; @version 3.8
+	 * @type string
+	 */
+	this.ECOMMERCE_PARAMETER = &quot;cb1&quot;;
+};
+
+Unity.Webtrekk = new Webtrekk();
+
+<span id='Unity-Webtrekk-method-StartTracking'>/**
+</span> * Starts the tracker - for the given web server URL and Track Id - from receiving and dispatching data to the server.
+ * &lt;br&gt; @version 3.8
+ * &lt;pre&gt;
+ * Usage samples: 
+ * Unity.Webtrekk.StartTracking(&quot;http://q3.webtrekk.net&quot;,&quot;111111111111&quot;);
+ * or
+ * Unity.Webtrekk.StartTracking(&quot;http://q3.webtrekk.net&quot;,&quot;111111111111&quot;, &quot;10&quot;);  // not recommended
+ * &lt;/pre&gt;
+ * @param {String} webServerURL The web server URL with the format http://ap.Unity.cat
+ * @param {String} trackId The track Id with the format 123456789012345
+ * @param {String} samplingRate [optional] The sampling rate in consultation with Webtrekk. 
+ * The sampling supresses requests to Webtrekk depending on the specified value - that is,
+ * only every nth user is tracked.
+ * @return {Boolean} true if the tracker was started successfully
+ * @method
+ */
+Webtrekk.prototype.StartTracking = function (webServerUrl, trackId, samplingRate){
+	if(samplingRate == null){
+    	return post_to_url(Unity.Webtrekk.serviceName, &quot;StartTracking&quot;, get_params([webServerUrl,trackId]),&quot;POST&quot;);
+    }else{
+    	return post_to_url(Unity.Webtrekk.serviceName, &quot;StartTracking&quot;, get_params([webServerUrl,trackId,samplingRate]),&quot;POST&quot;);
+    }
+};
+
+<span id='Unity-Webtrekk-method-StopTracking'>/**
+</span> * Stops the tracker from receiving and dispatching data to the server
+ * &lt;br&gt; @version 3.8
+ * @return {Boolean} true if tracker was stopped
+ * @method
+ */
+Webtrekk.prototype.StopTracking = function (){
+    return post_to_url(Unity.Webtrekk.serviceName, &quot;StopTracking&quot;, null,&quot;POST&quot;);
+};
+
+<span id='Unity-Webtrekk-method-TrackClick'>/**
+</span> * Sends a button click event to be tracked by the webtrekk tracker
+ * &lt;br&gt; You should invoke the {@link Unity.Webtrekk#StartTracking StartTracking} method prior to invoke this method.
+ * &lt;br&gt; @version 3.8
+ * &lt;pre&gt;
+ * Action tracking measures clicks on internal or external links and buttons.
+ * In mobile environments, the page name should be provided (unlike in websites).
+ *
+ * You could add further parameters to each request.
+ * For further information see, {@link Unity.Webtrekk.WebtrekkParametersCollection WebtrekkParametersCollection}.
+ * 
+ * Usage samples: 
+ * Unity.Webtrekk.TrackClick(&quot;myButton&quot;,&quot;home page&quot;);
+ * or
+ * Unity.Webtrekk.TrackClick(&quot;myButton&quot;,&quot;home page&quot;,[{&quot;Name&quot;:&quot;la&quot;, &quot;Value&quot;: &quot;es&quot;}, {&quot;Name&quot;:&quot;cd&quot;, &quot;Value&quot;: &quot;4515661&quot;}]);
+ *
+ * For checking the possible names of the additional parameters, see the properties in the Unity.Webtrekk object
+ * such as the {@link Unity.Webtrekk#COUNTRY_CODE COUNTRY_CODE} parameter.
+ *&lt;/pre&gt;
+ * @param {String} clickId The button identification
+ * @param {String} contentId The content identification (page name).
+ * @param {WebtrekkParametersCollection} additionalParameters [optional] Array containing additional parameters
+  @return {Boolean} true if the content/event was successfully tracked
+ * @method
+ */
+Webtrekk.prototype.TrackClick = function (clickId, contentId, additionalParameters){
+	if(additionalParameters == null){
+    	return post_to_url(Unity.Webtrekk.serviceName, &quot;TrackClick&quot;, get_params([clickId,contentId]),&quot;POST&quot;);
+    }else{
+    	return post_to_url(Unity.Webtrekk.serviceName, &quot;TrackClick&quot;, get_params([clickId,contentId,additionalParameters]),&quot;POST&quot;);
+    }
+};
+
+<span id='Unity-Webtrekk-method-TrackContent'>/**
+</span> * Sends a content/event to be tracked by the webtrekk tracker
+ * &lt;br&gt; You should invoke the {@link Unity.Webtrekk#StartTracking StartTracking} method prior to invoke this method.
+ * &lt;br&gt; @version 3.8
+ * &lt;pre&gt;
+ * Content tracking allows you to transmit particular app contents, such as pages or e-commerce values.
+ * The contents are evaluated as page impressions and displayed in the page analysis on the Webtrekk user
+ * interface.
+ * 
+ * A part from the content, you could also transmit additional parameters when tracking content.
+ * For further information see, {@link Unity.Analytics.AdditionalParameter AdditionalParameter}.
+ * 
+ * Usage samples: 
+ * Unity.Webtrekk.TrackContent(&quot;home page&quot;);
+ * or
+ * Unity.Webtrekk.TrackContent(&quot;home page&quot;,[{&quot;Name&quot;:&quot;la&quot;, &quot;Value&quot;: &quot;es&quot;}, {&quot;Name&quot;:&quot;cd&quot;, &quot;Value&quot;: &quot;4515661&quot;}]);
+ *
+ * For checking the possible names of the additional parameters, see the properties in the Unity.Webtrekk object
+ * such as the {@link Unity.Webtrekk#COUNTRY_CODE COUNTRY_CODE} parameter.
+ *&lt;/pre&gt;
+ * @param {String} contentId The content identification
+ * @param {WebtrekkParametersCollection} additionalParameters [optional] Array containing additional parameters
+ * @return {Boolean} true if the content/event was successfully tracked
+ * @method
+ */
+Webtrekk.prototype.TrackContent = function (contentId, additionalParameters){
+	if(additionalParameters == null){
+    	return post_to_url(Unity.Webtrekk.serviceName, &quot;TrackContent&quot;, get_params([contentId]),&quot;POST&quot;);
+    }else{
+    	return post_to_url(Unity.Webtrekk.serviceName, &quot;TrackContent&quot;, get_params([contentId,additionalParameters]),&quot;POST&quot;);
+    }
+};
+
+<span id='Unity-Webtrekk-method-SetRequestInterval'>/**
+</span> * Sets the time interval the request will use to transmit data to the server
+ * &lt;br&gt; This method should be executed prior to start the session tracking using the {@link Unity.Webtrekk#StartTracking StartTracking} method.
+ * &lt;br&gt; @version 3.8
+ * &lt;pre&gt;
+ * Default value is 5 minutes (300 seconds).
+ * To maximise battery life, the time interval can be increased to, for example, 10 minutes (600 seconds).
+ * &lt;/pre&gt;
+ * @param {double} intervalInSeconds The interval in seconds the request will transmit data to the server
+ * @return {Boolean} true if the interval was successfully set
+ * @method
+ */
+Webtrekk.prototype.SetRequestInterval = function (intervalInSeconds){
+    return post_to_url(Unity.Webtrekk.serviceName, &quot;SetRequestInterval&quot;, get_params([intervalInSeconds]),&quot;POST&quot;);
+};
+
 
 /*
  * COMMON FUNCTIONS
  */
 
-<span id='global-property-'>/**
+<span id='global-method-get_params'>/**
 </span> * @ignore
  * This method is used to build the JSON string request from the given invocation parameters array.
  * &lt;br&gt; @version 1.0
@@ -3790,10 +4169,10 @@ function post_to_url(serviceName, methodName, params, method, returnAsString) {
 }
 
 
-function post_to_url_async(serviceName, methodName, params, method, callBackFunc) {
-    method = method || &quot;POST&quot;; // Set method to post by default, if not specified.
+function post_to_url_async(serviceName, methodName, params, callBackFuncName, callbackId) {
+    method = &quot;POST&quot;; // Set method to post by default, if not specified.
 
-	var path = Unity.SERVICE_URI + serviceName + &quot;/&quot; + methodName;
+	var path = Unity.SERVICE_ASYNC_URI + serviceName + &quot;/&quot; + methodName;
 	
 	if(Unity.isBackground()) {
 		// socket is closed, do not call unity services
@@ -3801,46 +4180,32 @@ function post_to_url_async(serviceName, methodName, params, method, callBackFunc
 		return null;
 	}
 	
-	
 	var xhr = new XMLHttpRequest(); 
-	/* ASYNCHRONOUS OPTION	*/
-	xhr.onreadystatechange  = function()
-    {    
-        if(xhr.readyState  == 4)  //The 4 state means for the response is ready and sent by the server. 
-         {  
-              if(xhr.status  == 200) { //This status means ok, otherwise some error code is returned, 404 for example.
-                  var responseText = xhr.responseText;
-                  if(responseText!=null) {
-					try {
-                    	var result = eval('(' + responseText + ')');
-                    	if(callBackFunc) {
-                        	callBackFunc(result);
-                    	}
-					} catch(e){
-						console.log(&quot;wrong responseText received from Unity calls: &quot; + responseText);
-						return null;
-					}
-                  } else {
-                    if(callBackFunc) {callBackFunc(null);}
-                  }
-              }
-              else {
-                 console.dir(&quot;Error code &quot; + xhr.status);
-              } 
-         }
-    }; 
-	
-    xhr.open( method, path, false); 
+	xhr.open( method, path, false); 
 	xhr.setRequestHeader(&quot;Content-type&quot;, &quot;application/json&quot;);
-	var reqData = null;
+	var reqData = &quot;&quot;;
+	if(callBackFuncName != null) {
+		reqData = reqData + &quot;callback=&quot; + callBackFuncName;
+	} else {
+		reqData = reqData + &quot;callback=callback&quot;;
+	}
+	if(callbackId != null) {
+		reqData = reqData + &quot;&amp;callbackid=&quot; + callbackId;
+	} else {
+	    reqData = reqData + &quot;&amp;callbackid=callbackid&quot;;
+	}
+	
 	if(params!=null) {
-		reqData = &quot;json=&quot; + unescape(params);
+		reqData = reqData + &quot;&amp;json=&quot; + unescape(params);
 	}
 	try {
 		xhr.send(reqData);
 	} catch (e) {
         console.dir(&quot;error sending data async: &quot; + reqData);
+		var callbackfn = window[callBackFuncName];
+		if(callbackfn) callbackfn(null, callbackId);
     }
+	// nothing to return, callback function will be called with result data
 }
 
 <span id='Unity-JSON'>/**
