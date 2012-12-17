@@ -1,1 +1,0 @@
-Ext.data.JsonP.builder({"guide":"<h1>Builder Service</h1>\n\n<p>Page under construction</p>\n","title":"Builder Service"});
